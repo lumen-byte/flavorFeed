@@ -54,7 +54,7 @@ export async function loginUser(req, res) {
             return res.status(400).json({message: "Invalid credentials"});
         }
 
-        const token = jwt.sign({id: user._id}, "aq+5UOA[E.AA>{C^");
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
 
         res.cookie("token",token)
         res.status(200).json({
@@ -181,8 +181,7 @@ export async function loginFoodPartner(req, res) {
       });
     }
   }
-  export function logoutFoodPartner(req,res){
+  export async function logoutFoodPartner(req,res){
     res.clearCookie('token');
     res.status(200).json({message:"Food Partner logout successful"});
   }
-  
