@@ -20,7 +20,7 @@ export async function registerUser(req, res) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = await userModel.create({fullName, email, password: hashedPassword});
-        const token = jwt.sign({id: user._id}, "aq+5UOA[E.AA>{C^");
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
 
         res.status(201).json({
             message: "User registered successfully",
@@ -76,9 +76,10 @@ export function logoutUser(req, res) {
     res.clearCookie('token');
     res.status(200).json({message:"logout successful"});
 }
+
 export async function registerFoodPartner(req, res) {
     try {
-      const { name, email, password } = req.body;
+      const { name, phone, address , contactName , email, password } = req.body;
   
       // 1. Check if account already exists
       const isAccountAlreadyExists = await foodPartnerModel.findOne({ email });
@@ -95,6 +96,9 @@ export async function registerFoodPartner(req, res) {
       const foodpartner = await foodPartnerModel.create({
         name,
         email,
+        address,
+        contactName,
+        phone,
         password: hashedPassword,
       });
   
@@ -119,6 +123,9 @@ export async function registerFoodPartner(req, res) {
             _id: foodpartner._id,
             name: foodpartner.name,
             email: foodpartner.email,
+            address: foodpartner.address,
+            contactName: foodpartner.contactName,
+            phone: foodpartner.phone,
           },
         });
   
@@ -128,7 +135,7 @@ export async function registerFoodPartner(req, res) {
         error: error.message,
       });
     }
-  }
+}
   
 export async function loginFoodPartner(req, res) {
     try {
@@ -180,8 +187,9 @@ export async function loginFoodPartner(req, res) {
         error: error.message,
       });
     }
-  }
+}
+
   export async function logoutFoodPartner(req,res){
     res.clearCookie('token');
     res.status(200).json({message:"Food Partner logout successful"});
-  }
+}

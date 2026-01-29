@@ -1,19 +1,21 @@
-import React from 'react'
-import {BrowserRouter as Router, Route,Routes} from "react-router-dom";
+import React from 'react';
+import { Routes, Route } from "react-router-dom";
+import UserLogin from '../pages/UserLogin';
+import UserRegister from '../pages/UserRegister';
+import PartnerLogin from '../pages/PartnerLogin';
+import PartnerRegister from '../pages/PartnerRegister';
 
 function AppRoutes() {
   return (
-    <div>
-      <Router>
-        <Routes>
-          <Route path = '/user/register'element= {<h1>UserRegister</h1>}/>
-          <Route path = '/user/login'element = {<h1>UserLogin</h1>}/>
-          <Route path = '/food-partner/register'element = {<h1>FoodPartnerRegister</h1>}/>
-          <Route path = '/food-partner/login'element = {<h1>FoodPartnerLogin</h1>}/>
-        </Routes>
-      </Router>
-    </div>
-  )
+    <Routes>
+      <Route path='/user/register' element={<UserRegister />} />
+      <Route path='/user/login' element={<UserLogin />} />
+      <Route path='/food-partner/register' element={<PartnerRegister />} />
+      <Route path='/food-partner/login' element={<PartnerLogin />} />
+      <Route path='/' element={<div className="auth-page"><h1>Welcome to FlavorFeed</h1></div>} />
+      <Route path='*' element={<div className="auth-page"><h1>404 - Not Found</h1></div>} />
+    </Routes>
+  );
 }
 
-export default AppRoutes
+export default AppRoutes;

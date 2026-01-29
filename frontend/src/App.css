@@ -1,11 +1,107 @@
-*{
-  margin: 0%;
-  padding: 0%;
-  box-sizing: border-box;
+@import './styles/theme.css';
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: 'Inter', -apple-system, sans-serif;
+  transition: all var(--transition);
 }
-html, body {
-  height: 100%;
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px; /* More breathing room on top/bottom */
+}
+
+.auth-card {
+  background: var(--card-bg);
+  padding: 3rem; /* Increased padding inside the card */
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
   width: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f5f5;
+  max-width: 440px;
+  box-shadow: var(--shadow);
+  text-align: center;
 }
+
+.auth-card h2 { font-size: 1.8rem; margin-bottom: 0.75rem; font-weight: 700; }
+.auth-card p { color: var(--text-muted); margin-bottom: 2.5rem; font-size: 1rem; }
+
+/* Role Switcher with more space */
+.role-switcher {
+  display: flex;
+  background: var(--role-bg);
+  padding: 6px;
+  border-radius: 14px;
+  margin-bottom: 2.5rem;
+}
+
+.role-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: var(--transition);
+}
+
+.role-btn.active {
+  background: var(--card-bg);
+  color: var(--primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.form-group { text-align: left; margin-bottom: 1.5rem; } /* More space between inputs */
+
+.form-group label { 
+  display: block; 
+  font-size: 0.85rem; 
+  margin-bottom: 8px; 
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 14px 18px; /* Bigger touch targets */
+  background: var(--input-bg);
+  border: 2px solid transparent; /* Hidden border until focus */
+  border-radius: 12px;
+  color: var(--text-main);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.auth-card input:focus {
+  border-color: var(--primary);
+  background: var(--card-bg);
+  outline: none;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.auth-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px); /* Lift effect */
+}
+
+.auth-footer { margin-top: 2rem; font-size: 0.95rem; }
+.auth-footer a { color: var(--primary); font-weight: 600; text-decoration: none; }

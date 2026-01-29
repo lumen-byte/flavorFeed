@@ -1,0 +1,31 @@
+:root {
+    /* Increased spacing and rounded corners */
+    --radius: 16px;
+    --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+    
+    /* Soft Premium Light Palette */
+    --bg-color: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-main: #2d3436;
+    --text-muted: #636e72;
+    --primary: #ff4757;
+    --primary-hover: #ff6b81;
+    --border: #edf2f7;
+    --input-bg: #f8fafc;
+    --role-bg: #f1f2f6;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-color: #0b0e11;
+      --card-bg: #15191c;
+      --text-main: #f5f6fa;
+      --text-muted: #a4b0be;
+      --primary: #ff6b81;
+      --border: #2d3436;
+      --input-bg: #1c2126;
+      --role-bg: #1c2126;
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+  }
