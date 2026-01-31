@@ -19,8 +19,16 @@ export async function registerUser(req, res) {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await userModel.create({fullName, email, password: hashedPassword});
-        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
+        const user = await userModel.create({
+          fullName,
+          email, 
+          password: hashedPassword
+        });
+        
+        const token = jwt.sign({
+          id: user._id
+        }, process.env.JWT_SECRET
+      );
 
         res.status(201).json({
             message: "User registered successfully",
@@ -105,7 +113,7 @@ export async function registerFoodPartner(req, res) {
       // 4. Generate JWT
       const token = jwt.sign(
         { id: foodpartner._id },
-        "aq+5UOA[E.AA>{C^",
+        process.env.JWT_SECRET,
       );
   
       // 5. Set token in HTTP-only cookie
@@ -160,7 +168,7 @@ export async function loginFoodPartner(req, res) {
       // 3. Generate JWT
       const token = jwt.sign(
         { id: foodpartner._id },
-        "aq+5UOA[E.AA>{C^",
+        process.env.JWT_SECRET,
       );
   
       // 4. Set token in HTTP-only cookie

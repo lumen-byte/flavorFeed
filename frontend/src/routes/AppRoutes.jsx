@@ -1,19 +1,21 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
-import UserLogin from '../pages/UserLogin';
-import UserRegister from '../pages/UserRegister';
-import PartnerLogin from '../pages/PartnerLogin';
-import PartnerRegister from '../pages/PartnerRegister';
+import UserLogin from '../pages/auth/UserLogin.jsx';
+import UserRegister from '../pages/auth/UserRegister.jsx';
+import PartnerLogin from '../pages/auth/PartnerLogin.jsx';
+import PartnerRegister from '../pages/auth/PartnerRegister.jsx';
+import Home from '../pages/general/Home.jsx';
+
+
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route path='/user/register' element={<UserRegister />} />
-      <Route path='/user/login' element={<UserLogin />} />
-      <Route path='/food-partner/register' element={<PartnerRegister />} />
-      <Route path='/food-partner/login' element={<PartnerLogin />} />
-      <Route path='/' element={<div className="auth-page"><h1>Welcome to FlavorFeed</h1></div>} />
-      <Route path='*' element={<div className="auth-page"><h1>404 - Not Found</h1></div>} />
+      <Route path="/" element={<Home />} /> 
+      <Route path="/user/login" element={<UserLogin />} />
+      <Route path="/user/register" element={<UserRegister />} />
+      <Route path="/food-partner/login" element={<PartnerLogin />} />
+      <Route path="/food-partner/register" element={<PartnerRegister />} />
     </Routes>
   );
 }
