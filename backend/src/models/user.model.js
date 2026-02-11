@@ -13,7 +13,34 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    orders: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Order'
+        }
+    ],
+    likes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Food'
+        }
+    ],
+    cart: [
+        {
+            foodId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Food',
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true,
+                min: 1,
+                default: 1
+            }
+        }
+    ]
 }, { timestamps: true });
 
 const userModel = mongoose.model('User', userSchema);

@@ -2,6 +2,8 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.routes.js';
 import foodRoutes from './routes/food.routes.js';
+import socialRoutes from './routes/social.routes.js';
+import orderRoutes from './routes/order.routes.js';
 import cors from 'cors';
 
 const app = express();
@@ -15,6 +17,8 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/food', foodRoutes);
+app.use('/api/social', socialRoutes);
+app.use('/api/order', orderRoutes);
 
 app.get('/', (req, res) => {
     res.send('Hello from the backend server!');

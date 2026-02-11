@@ -8,24 +8,28 @@ const PartnerRegister = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-    const restaurantName = e.target.restaurantName.value;
-    const businessEmail = e.target.businessEmail.value;
-    const password = e.target.password.value;
+    
+    // 1. COLLECT ALL DATA FROM FORM
+    const formData = {
+      restaurantName: e.target.restaurantName.value,
+      businessEmail: e.target.businessEmail.value,
+      password: e.target.password.value,
+      phone: e.target.phone.value,
+      address: e.target.address.value,
+      contactName: e.target.contactName.value
+    };
     
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/food-partner/register', {
-        restaurantName,
-        businessEmail,
-        password
-      }, {
+      // 2. SEND EXPANDED DATA TO BACKEND
+      const response = await axios.post('http://localhost:3000/api/auth/food-partner/register', formData, {
         withCredentials: true,
-      }); // FIXED: Added closing ); here
+      }); 
 
       console.log(response.data);
       navigate('/food-partner/login');
     } catch (err) {
       console.error("Registration failed:", err.response?.data || err.message);
-      alert("Registration failed. Please try again.");
+      alert("Registration failed. Please check all fields.");
     }
   }; 
 
@@ -39,24 +43,43 @@ const PartnerRegister = () => {
         <h2>Partner Register</h2>
         <p>Register your kitchen on FlavorFeed</p>
         
-        {/* FIXED: Added onSubmit */}
         <form onSubmit={handleSubmit}>
+          {/* Restaurant / Business Name */}
           <div className="form-group">
-            <label>Restaurant Name</label>
-            {/* FIXED: Added name="restaurantName" */}
+            <label>Business Name</label>
             <input name="restaurantName" type="text" placeholder="The Spice Hut" required />
           </div>
+
+          {/* Contact Person Name */}
+          <div className="form-group">
+            <label>Contact Name</label>
+            <input name="contactName" type="text" placeholder="Owner or Manager Name" required />
+          </div>
+
+          {/* Business Email */}
           <div className="form-group">
             <label>Business Email</label>
-            {/* FIXED: Added name="businessEmail" */}
             <input name="businessEmail" type="email" placeholder="contact@business.com" required />
           </div>
+
+          {/* Phone Number */}
+          <div className="form-group">
+            <label>Phone Number</label>
+            <input name="phone" type="tel" placeholder="+91 00000 00000" required />
+          </div>
+
+          {/* Business Address */}
+          <div className="form-group">
+            <label>Full Address</label>
+            <input name="address" type="text" placeholder="Shop No, Street, City" required />
+          </div>
+
+          {/* Password */}
           <div className="form-group">
             <label>Password</label>
-            {/* FIXED: Added name="password" */}
             <input name="password" type="password" placeholder="••••••••" required />
           </div>
-          {/* FIXED: Changed type to submit */}
+
           <button type="submit" className="auth-btn">Register Business</button>
         </form>
         

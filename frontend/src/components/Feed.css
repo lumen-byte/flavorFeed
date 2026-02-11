@@ -1,0 +1,24 @@
+.feed-container {
+    height: 100vh;
+    width: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.feed-container::-webkit-scrollbar {
+    display: none;
+}
+
+.no-reels {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    /* Assuming dark background from ReelCard */
+    background: #1a1a1a;
+}
