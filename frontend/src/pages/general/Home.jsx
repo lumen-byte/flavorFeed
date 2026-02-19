@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Feed from '../../components/Feed';
 import '../../styles/Home.css';
 
 function Home() {
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('global'); // 'global' or 'nearby'
     const [location, setLocation] = useState(null);
     const [locationError, setLocationError] = useState(null);
@@ -50,19 +52,44 @@ function Home() {
                 </button>
             </div>
 
+            {/* Floating Cart Button */}
+            <button
+                className="floating-cart-btn"
+                onClick={() => navigate('/cart')}
+                style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    right: '20px',
+                    backgroundColor: '#ff4757',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: '60px',
+                    height: '60px',
+                    fontSize: '30px',
+                    boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
+                    cursor: 'pointer',
+                    zIndex: 1000
+                }}
+            >
+                🛒
+            </button>
+
             {/* Content */}
-            {activeTab === 'nearby' && !location ? (
-                <div className="location-request">
-                    <h2>Where are you?</h2>
-                    <p>{locationError || "We need your location to find delicious food near you."}</p>
-                    <button className="location-btn" onClick={requestLocation}>
-                        Allow Location Access
-                    </button>
-                </div>
-            ) : (
-                <Feed type={activeTab} location={location} />
-            )}
-        </div>
+            {
+                activeTab === 'nearby' && !location ? (
+                    <div className="location-request">
+                        <h2>Where are you?</h2>
+                        <p>{locationError || "We need your location to find delicious food near you."}</p>
+                        <button className="location-btn" onClick={requestLocation}>
+                            Allow Location Access
+                        </button>
+                    </div>
+                ) : (
+                    <Feed type={activeTab} location={location} />
+                )
+            }
+        </div >
     );
 }
 

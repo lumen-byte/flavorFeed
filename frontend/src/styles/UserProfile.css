@@ -1,0 +1,107 @@
+.profile-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    color: white;
+    padding-bottom: 80px;
+    /* Space for bottom nav/footer if any */
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #252525;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.profile-info h2 {
+    margin: 0;
+    color: #fff;
+}
+
+.profile-info p {
+    color: #aaa;
+    margin: 5px 0 0;
+}
+
+.logout-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.orders-section h3 {
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.order-card {
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.order-status {
+    color: #27ae60;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.order-restaurant {
+    margin-bottom: 10px;
+}
+
+.order-restaurant strong {
+    font-size: 1.1rem;
+    color: #ff4757;
+}
+
+.order-restaurant p {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin: 2px 0;
+}
+
+.order-items {
+    margin-bottom: 10px;
+    border-top: 1px dashed #333;
+    padding-top: 10px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    margin-bottom: 5px;
+}
+
+.order-total {
+    text-align: right;
+    font-size: 1.1rem;
+    color: #fff;
+    border-top: 1px solid #333;
+    padding-top: 10px;
+}

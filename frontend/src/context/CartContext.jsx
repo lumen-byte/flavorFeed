@@ -30,8 +30,7 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = async (foodId, quantity = 1) => {
         if (!user) {
-            alert("Please login to add to cart");
-            return;
+            return false;
         }
         try {
             const res = await axios.post('http://localhost:3000/api/order/cart',
@@ -39,10 +38,10 @@ export const CartProvider = ({ children }) => {
                 { withCredentials: true }
             );
             setCart(res.data.cart);
-            alert("Added to cart!");
+            return true;
         } catch (err) {
             console.error("Error adding to cart", err);
-            alert("Failed to add to cart");
+            return false;
         }
     };
 

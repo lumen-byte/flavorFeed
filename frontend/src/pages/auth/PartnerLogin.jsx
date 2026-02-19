@@ -7,13 +7,13 @@ const PartnerLogin = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     const businessEmail = e.target.businessEmail.value;
     const password = e.target.password.value;
 
     try {
       const response = await axios.post('http://localhost:3000/api/auth/food-partner/login', {
-        businessEmail,
+        email: businessEmail,
         password
       }, {
         withCredentials: true,
@@ -32,7 +32,7 @@ const PartnerLogin = () => {
       <div className="auth-card">
         <h2>Partner Login</h2>
         <p>Manage your restaurant portal</p>
-        
+
         {/* Fixed: Added onSubmit handler */}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -48,7 +48,7 @@ const PartnerLogin = () => {
           {/* Fixed: Changed type to 'submit' */}
           <button type="submit" className="auth-btn">Dashboard Login</button>
         </form>
-        
+
         <div className="auth-footer">
           Become a partner? <Link to="/food-partner/register">Register Business</Link>
         </div>

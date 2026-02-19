@@ -5,27 +5,27 @@ const foodPartnerSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  contactName:{
+  contactName: {
     type: String,
-    required:true
+    required: true
   },
   email: {
     type: String,
     required: true,
     unique: true
   },
-  phone:{
-    type:String,
-    required:true
+  phone: {
+    type: String,
+    required: true
   },
-  address:{
-    type:String,
-    required:true
+  address: {
+    type: String,
+    required: true
   },
   location: {
     type: {
-      type: String, 
-      enum: ['Point'], 
+      type: String,
+      enum: ['Point'],
       required: true
     },
     coordinates: {
@@ -43,5 +43,7 @@ const foodPartnerModel = mongoose.model(
   "FoodPartner",
   foodPartnerSchema
 );
+
+foodPartnerSchema.index({ location: "2dsphere" });
 
 export default foodPartnerModel; 

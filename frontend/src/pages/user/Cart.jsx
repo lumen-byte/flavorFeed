@@ -11,9 +11,32 @@ const Cart = () => {
         fetchCart();
     }, []);
 
-    // Mock price
-    const ITEM_PRICE = 100;
-    const total = cart.reduce((acc, item) => acc + (item.quantity * ITEM_PRICE), 0);
+    // Group items by Restaurant
+    const groupedItems = cart.reduce((acc, item) => {
+        const partnerName = item.foodId?.foodPartner?.name || "Unknown Restaurant";
+        const partnerId = item.foodId?.foodPartner?._id || "unknown";
+
+        if (!acc[partnerId]) {
+            acc[partnerId] = {
+                name: partnerName,
+                items: [],
+                subtotal: 0
+            };
+        }
+
+        const price = item.foodId?.price || 0;
+        const itemTotal = price * item.quantity;
+
+        acc[partnerId].items.push(item);
+        acc[partnerId].subtotal += itemTotal;
+
+        return acc;
+    }, {});
+
+    const DELIVERY_FEE_PER_RESTAURANT = 40;
+    const totalDeliveryFee = Object.keys(groupedItems).length * DELIVERY_FEE_PER_RESTAURANT;
+    const subtotal = cart.reduce((acc, item) => acc + (item.quantity * (item.foodId?.price || 0)), 0);
+    const grandTotal = subtotal + totalDeliveryFee;
 
     return (
         <div className="cart-page">
@@ -24,18 +47,48 @@ const Cart = () => {
                     <button onClick={() => navigate('/')}>Go Eat!</button>
                 </div>
             ) : (
-                <div className="cart-items">
-                    {cart.map((item) => (
-                        <div key={item._id} className="cart-item">
-                            <div className="item-info">
-                                <h3>{item.foodId?.name || "Loading..."}</h3>
-                                <p>Qty: {item.quantity}</p>
-                                <p>Price: ₹{item.quantity * ITEM_PRICE}</p>
+                <div className="cart-container">
+                    <div className="cart-groups">
+                        {Object.entries(groupedItems).map(([partnerId, group]) => (
+                            <div key={partnerId} className="restaurant-group">
+                                <div className="group-header">
+                                    <h3>🍽️ {group.name}</h3>
+                                </div>
+                                {group.items.map((item) => (
+                                    <div key={item._id} className="cart-item">
+                                        <div className="item-details">
+                                            <h4>{item.foodId?.name || "Loading..."}</h4>
+                                            <p className="item-price">₹{item.foodId?.price}</p>
+                                        </div>
+                                        <div className="item-actions">
+                                            <span>Qty: {item.quantity}</span>
+                                            <span className="item-total">₹{item.quantity * (item.foodId?.price || 0)}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                                <div className="group-footer">
+                                    <p>Subtotal: ₹{group.subtotal}</p>
+                                    <p className="delivery-fee">Delivery Fee: ₹{DELIVERY_FEE_PER_RESTAURANT}</p>
+                                </div>
                             </div>
+                        ))}
+                    </div>
+
+                    <div className="cart-summary-card">
+                        <h3>Order Summary</h3>
+                        <div className="summary-row">
+                            <span>Item Total</span>
+                            <span>₹{subtotal}</span>
                         </div>
-                    ))}
-                    <div className="cart-summary">
-                        <h3>Total: ₹{total}</h3>
+                        <div className="summary-row">
+                            <span>Delivery Fees</span>
+                            <span>+ ₹{totalDeliveryFee}</span>
+                        </div>
+                        <hr />
+                        <div className="summary-row total">
+                            <span>To Pay</span>
+                            <span>₹{grandTotal}</span>
+                        </div>
                         <button className="checkout-btn" onClick={() => navigate('/checkout')}>
                             Proceed to Checkout
                         </button>

@@ -1,11 +1,45 @@
 .feed-container {
     height: 100vh;
-    width: 100%;
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
-    /* Hide scrollbar */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    background-color: black;
+    position: relative;
+}
+
+.feed-tabs {
+    position: fixed;
+    top: 70px;
+    /* Below Navbar */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px 15px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+}
+
+.feed-tabs button {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.feed-tabs button.active {
+    color: white;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    border-bottom: 2px solid white;
+}
+
+.feed-tabs .divider {
+    color: #555;
+    font-size: 1.2rem;
 }
 
 .feed-container::-webkit-scrollbar {

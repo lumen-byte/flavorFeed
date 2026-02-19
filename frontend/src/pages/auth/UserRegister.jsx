@@ -1,42 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios'; // Fixed typo in 'axios'
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import "../../App.css";
-import {useNavigate} from 'react-router-dom';
 
 const UserRegister = () => {
-
+  const { register } = useAuth();
   const navigate = useNavigate();
-  // 1. Mark the function as async
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     const fullName = e.target.fullName.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    console.log("Attempting registration for:", fullName);
-
     try {
-      // 2. Use await with the correct backend URL
-      // (Removed the leading slash before http)
-      const response = await axios.post('http://localhost:3000/api/auth/user/register', {
-        fullName: fullName, // Make sure this matches your backend model key
+      await register({
+        fullName,
         email,
         password
-      },{
-      // const withCredentials: true;
-    });
+      });
 
-      console.log("Success:", response.data);
-
-      navigate('/');
-
-      alert(`Welcome, ${fullName}! Registration successful.`);
+      alert(`Welcome, ${fullName}! Registration successful. Please login.`);
+      navigate('/user/login');
     } catch (error) {
       console.error("Registration error:", error.response?.data || error.message);
       alert("Registration failed. Please try again.");
-
     }
   };
 
@@ -54,31 +43,31 @@ const UserRegister = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Full Name</label>
-            <input 
-              name="fullName" 
-              type="text" 
-              placeholder="Enter your full name" 
-              required 
+            <input
+              name="fullName"
+              type="text"
+              placeholder="Enter your full name"
+              required
             />
           </div>
 
           <div className="form-group">
             <label>Email</label>
-            <input 
-              name="email" 
-              type="email" 
-              placeholder="name@example.com" 
-              required 
+            <input
+              name="email"
+              type="email"
+              placeholder="name@example.com"
+              required
             />
           </div>
 
           <div className="form-group">
             <label>Password</label>
-            <input 
-              name="password" 
-              type="password" 
-              placeholder="••••••••" 
-              required 
+            <input
+              name="password"
+              type="password"
+              placeholder="••••••••"
+              required
             />
           </div>
 

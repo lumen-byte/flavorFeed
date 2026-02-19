@@ -1,39 +1,119 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
+import { useToast } from '../context/ToastContext';
 import { useAuth } from '../context/AuthContext';
 import './ReelCard.css'; // We'll create this CSS
 
 const ReelCard = ({ food, isActive }) => {
     const videoRef = useRef(null);
     const { addToCart } = useCart();
+    const { addToast } = useToast();
     const { user } = useAuth();
-    const [likes, setLikes] = useState(food.likes?.length || 0); // Assuming food has likes count or array
-    // Since our mock backend didn't populate likes, we might need to fetch or just use 0.
-    // Ideally backend should return like count and if current user liked it.
+
+    // State
+    const [likes, setLikes] = useState(food.likes?.length || 0);
+    const [isLiked, setIsLiked] = useState(false);
+    const [showComments, setShowComments] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState("");
+
+    useEffect(() => {
+        // Check if user liked this food
+        if (user && food.likes?.includes(user._id)) {
+            setIsLiked(true);
+        }
+    }, [user, food]);
 
     // Auto play/pause based on active state
     useEffect(() => {
-        if (isActive) {
+        if (!videoRef.current) return;
+
+        if (isActive && !showComments) {
             videoRef.current.currentTime = 0;
             videoRef.current.play().catch(e => console.log("Autoplay prevented", e));
         } else {
             videoRef.current.pause();
         }
-    }, [isActive]);
+    }, [isActive, showComments]);
 
     const handleLike = async () => {
-        if (!user) return alert("Login to like!");
+        if (!user) {
+            addToast("Please login to like!", "info");
+            return;
+        }
+
+        // Optimistic Update
+        const previousLikes = likes;
+        const previousIsLiked = isLiked;
+
+        setIsLiked(!isLiked);
+        setLikes(isLiked ? likes - 1 : likes + 1);
+
         try {
-            await axios.post('http://localhost:3000/api/social/like', { foodId: food._id }, { withCredentials: true });
-            setLikes(prev => prev + 1); // Optimistic update
+            const res = await axios.post('http://localhost:3000/api/social/like', { foodId: food._id }, { withCredentials: true });
+
+            // Sync with server source of truth
+            setLikes(res.data.likesCount);
+            setIsLiked(res.data.isLiked);
         } catch (err) {
+            // Revert on error
+            setLikes(previousLikes);
+            setIsLiked(previousIsLiked);
             console.error("Like error", err);
         }
     };
 
-    const handleAddToCart = () => {
-        addToCart(food._id, 1);
+    const toggleComments = () => {
+        setShowComments(!showComments);
+        if (!showComments && comments.length === 0) {
+            fetchComments();
+        }
+    };
+
+    const fetchComments = async () => {
+        try {
+            const res = await axios.get(`http://localhost:3000/api/social/comments/${food._id}`, { withCredentials: true });
+            setComments(res.data.comments);
+        } catch (err) {
+            console.error("Fetch comments error", err);
+        }
+    };
+
+    const handleAddComment = async (e) => {
+        e.preventDefault();
+        if (!newComment.trim()) return;
+        if (!user) {
+            addToast("Please login to comment!", "info");
+            return;
+        }
+
+        try {
+            const res = await axios.post('http://localhost:3000/api/social/comment', {
+                foodId: food._id,
+                text: newComment
+            }, { withCredentials: true });
+
+            setComments([res.data.comment, ...comments]);
+            setNewComment("");
+            addToast("Comment added!", "success"); // Added toast for success
+        } catch (err) {
+            console.error("Add comment error", err);
+            addToast("Failed to add comment.", "error"); // Added toast for error
+        }
+    };
+
+    const handleAddToCart = async () => {
+        if (!user) {
+            addToast("Please login to add to cart", "info");
+            return;
+        }
+        const success = await addToCart(food._id);
+        if (success) {
+            addToast("Added to cart! 🛒", "success");
+        } else {
+            addToast("Failed to add to cart. Try logging in again.", "error");
+        }
     };
 
     const handleShare = async () => {
@@ -42,13 +122,15 @@ const ReelCard = ({ food, isActive }) => {
                 await navigator.share({
                     title: `Check out ${food.name} on FlavorFeed!`,
                     text: food.description,
-                    url: window.location.href, // Or specific reel URL
+                    url: window.location.href,
                 });
             } catch (err) {
                 console.log('Error sharing', err);
             }
         } else {
-            alert('Share not supported on this browser');
+            // Fallback
+            navigator.clipboard.writeText(window.location.href);
+            alert("Link copied to clipboard!");
         }
     };
 
@@ -59,32 +141,69 @@ const ReelCard = ({ food, isActive }) => {
                 src={food.video}
                 className="reel-video"
                 loop
-                muted={false} // Maybe start muted?
+                muted={false}
                 playsInline
+                onClick={toggleComments} // Click video to toggle comments off?
             />
 
-            <div className="reel-overlay">
-                <div className="reel-info">
-                    <h3>{food.name}</h3>
-                    <p>{food.description}</p>
-                    <small>By {food.foodPartner?.name}</small>
-                </div>
+            {!showComments && (
+                <div className="reel-overlay">
+                    <div className="reel-info">
+                        <h3>{food.name}</h3>
+                        <p className="food-price">₹{food.price}</p>
+                        <p>{food.description}</p>
+                        <small>📍 {food.foodPartner?.address}</small>
+                        <br />
+                        <small>By {food.foodPartner?.name}</small>
+                    </div>
 
-                <div className="reel-actions">
-                    <button className="action-btn" onClick={handleLike}>
-                        ❤️ {likes}
-                    </button>
-                    <button className="action-btn" onClick={() => alert("Comments comming soon!")}>
-                        💬
-                    </button>
-                    <button className="action-btn" onClick={handleShare}>
-                        ↗️
-                    </button>
-                    <button className="buy-btn" onClick={handleAddToCart}>
-                        Add to Cart 🛒
-                    </button>
+                    <div className="reel-actions">
+                        <button className="action-btn" onClick={handleLike}>
+                            {isLiked ? '❤️' : '🤍'} {likes}
+                        </button>
+                        <button className="action-btn" onClick={toggleComments}>
+                            💬 {comments.length > 0 ? comments.length : ''}
+                        </button>
+                        <button className="action-btn" onClick={handleShare}>
+                            ↗️
+                        </button>
+                        <button className="buy-btn" onClick={handleAddToCart}>
+                            Add to Cart 🛒
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
+
+            {/* Comments Overlay */}
+            {showComments && (
+                <div className="comments-overlay">
+                    <div className="comments-header">
+                        <h3>Comments</h3>
+                        <button onClick={toggleComments}>✖️</button>
+                    </div>
+
+                    <div className="comments-list">
+                        {comments.length === 0 ? <p className="no-comments">No comments yet. Be the first!</p> : (
+                            comments.map(c => (
+                                <div key={c._id} className="comment-item">
+                                    <strong>{c.user?.fullName || "User"}</strong>
+                                    <p>{c.text}</p>
+                                </div>
+                            ))
+                        )}
+                    </div>
+
+                    <form className="comment-form" onSubmit={handleAddComment}>
+                        <input
+                            type="text"
+                            placeholder="Add a comment..."
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                        />
+                        <button type="submit">Post</button>
+                    </form>
+                </div>
+            )}
         </div>
     );
 };
