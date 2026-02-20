@@ -120,13 +120,13 @@ export async function registerFoodPartner(req, res) {
       process.env.JWT_SECRET,
     );
 
-    // 5. Set token in HTTP-only cookie
+    // 5. Set token in HTTP-only cookie (separate name from user token)
     res
-      .cookie("token", token, {
+      .cookie("partner_token", token, {
         httpOnly: true,
-        secure: false, // true in production (HTTPS)
+        secure: false,
         sameSite: "lax",
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        maxAge: 24 * 60 * 60 * 1000,
       })
       .status(201)
       .json({
@@ -175,13 +175,13 @@ export async function loginFoodPartner(req, res) {
       process.env.JWT_SECRET,
     );
 
-    // 4. Set token in HTTP-only cookie
+    // 4. Set token in HTTP-only cookie (separate name from user token)
     res
-      .cookie("token", token, {
+      .cookie("partner_token", token, {
         httpOnly: true,
-        secure: false, // true in production (HTTPS)
+        secure: false,
         sameSite: "lax",
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        maxAge: 24 * 60 * 60 * 1000,
       })
       .status(200)
       .json({
@@ -202,6 +202,6 @@ export async function loginFoodPartner(req, res) {
 }
 
 export async function logoutFoodPartner(req, res) {
-  res.clearCookie('token');
+  res.clearCookie('partner_token');
   res.status(200).json({ message: "Food Partner logout successful" });
 }

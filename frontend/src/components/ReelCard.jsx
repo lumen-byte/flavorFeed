@@ -138,12 +138,14 @@ const ReelCard = ({ food, isActive }) => {
         <div className="reel-card">
             <video
                 ref={videoRef}
-                src={food.video}
+                src={food.video ? `${food.video}?tr=w-720,q-60,f-mp4` : ''}
+                poster={food.image ? `${food.image}?tr=w-720,q-50,f-webp` : ''}
                 className="reel-video"
                 loop
                 muted={false}
                 playsInline
-                onClick={toggleComments} // Click video to toggle comments off?
+                preload="none"
+                onClick={toggleComments}
             />
 
             {!showComments && (

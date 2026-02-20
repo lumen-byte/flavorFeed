@@ -58,12 +58,13 @@ const VideoCard = ({ foodItem }) => {
                 ref={videoRef}
                 onClick={handleVideoPress}
                 className="video-player"
-                src={foodItem.video}
+                src={foodItem.video ? `${foodItem.video}?tr=w-720,q-60,f-mp4` : ''}
                 loop
-                muted={false} // Allow sound, but browsers might block auto-play with sound
+                muted={false}
                 playsInline
+                preload="none"
             />
-            
+
             {/* Play Icon Overlay (optional) */}
             {!isPlaying && <div className="play-icon">▶</div>}
         </div>

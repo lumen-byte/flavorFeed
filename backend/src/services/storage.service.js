@@ -1,36 +1,40 @@
-import ImageKit from "imagekit";
-import dotenv from "dotenv"; // Add this
-dotenv.config(); // Add this
+import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
+import { Readable } from "stream";
 
-const imagekit = new ImageKit({
-    publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-    privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+dotenv.config();
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-export async function uploadFile(file, fileName){
-    const result = await imagekit.upload({
-        file: file,
-        fileName: fileName,
+
+// Upload a buffer (from multer memoryStorage) to Cloudinary
+export async function uploadFile(fileBuffer, fileName) {
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            {
+                resource_type: "auto",
+                public_id: fileName,
+                folder: "flavorfeed_reels",
+            },
+            (error, result) => {
+                if (error) {
+                    console.error("Cloudinary Upload Error:", error.message);
+                    return reject(error);
+                }
+                console.log("✅ Cloudinary Upload Success:", result.secure_url);
+                resolve({ url: result.secure_url });
+            }
+        );
+
+        // Convert buffer to stream and pipe to Cloudinary
+        const readable = new Readable();
+        readable.push(fileBuffer);
+        readable.push(null);
+        readable.pipe(uploadStream);
     });
-    return result;
 }
-export default imagekit;
 
-// // export { uploadFile };
-
-// export const uploadFile = async (fileBuffer, fileName) => {
-//     try {
-//         const response = await imagekit.upload({
-//             file: fileBuffer,
-//             fileName: fileName,
-//             folder: "/flavorfeed_reels"
-//         });
-//         return response;
-//     } catch (error) {
-//         console.error("ImageKit Upload Error:", error);
-//         throw error;
-//     }
-// };
-
-// // Default export of the instance
-// export default imagekit;
+export default cloudinary;
