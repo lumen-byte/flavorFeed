@@ -25,7 +25,7 @@ const Checkout = () => {
                 coordinates: [0, 0] // Mock coordinates, ideally we get from map
             };
 
-            await axios.post('http://localhost:3000/api/order/create', {
+            await axios.post(`${import.meta.env.VITE_API_URL}/order/create`, {
                 address,
                 location
             }, { withCredentials: true });

@@ -23,7 +23,7 @@ const Feed = () => {
                 params.long = location.long;
             }
 
-            const res = await axios.get('http://localhost:3000/api/food', { params });
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/food`, { params });
             setFoods(res.data.foodItems);
             setActiveIndex(0);
         } catch (err) {

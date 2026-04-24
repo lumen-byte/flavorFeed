@@ -1,0 +1,46 @@
+/* CONCEPT: Skeleton Loaders 
+   Skeletons use a highly optimized CSS animation (`linear-gradient` shifting) to simulate loading.
+   This feels inherently faster to the human brain than a spinning circle because the layout doesn't jump
+   when the real content eventually loads.
+*/
+
+.skeleton {
+    background: #e0e0e0;
+    background: linear-gradient(110deg,
+            #2a2a2a 8%,
+            #333333 18%,
+            #2a2a2a 33%);
+    border-radius: 5px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+}
+
+/* Specific shapes for different UI elements */
+.skeleton-text {
+    height: 12px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+}
+
+.skeleton-text.title {
+    height: 20px;
+    width: 60%;
+    margin-bottom: 15px;
+}
+
+.skeleton-circle {
+    border-radius: 50%;
+}
+
+.skeleton-card {
+    height: 120px;
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+@keyframes shine {
+    to {
+        background-position-x: -200%;
+    }
+}

@@ -1,0 +1,57 @@
+/* Rating Modal Specific Styles */
+
+.rating-modal {
+    text-align: center;
+}
+
+.partner-name-highlight {
+    color: #ff4757;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.stars-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.star {
+    font-size: 2.5rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.star:hover {
+    transform: scale(1.2);
+}
+
+.star.filled {
+    color: #ffd700;
+}
+
+.rating-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.rating-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: none;
+    font-family: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+    .rating-form textarea {
+        background: #333;
+        border-color: #444;
+        color: white;
+    }
+}

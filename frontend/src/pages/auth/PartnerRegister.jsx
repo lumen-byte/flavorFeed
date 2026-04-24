@@ -43,14 +43,22 @@ const PartnerRegister = () => {
       email: e.target.businessEmail.value,
       password: e.target.password.value,
       phone: e.target.phone.value,
-      address: e.target.address.value,
+      addressDetails: {
+        shopName: e.target.shopName.value,
+        buildingNo: e.target.buildingNo.value,
+        landmark: e.target.landmark.value,
+        area: e.target.area.value,
+        city: e.target.city.value,
+        state: e.target.state.value,
+        pincode: e.target.pincode.value,
+      },
       contactName: e.target.contactName.value,
       lat: coords.lat,
       long: coords.long
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/food-partner/register', formData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/food-partner/register`, formData, {
         withCredentials: true,
       });
 
@@ -100,8 +108,32 @@ const PartnerRegister = () => {
 
           {/* Business Address */}
           <div className="form-group">
-            <label>Full Address</label>
-            <input name="address" type="text" placeholder="Shop No, Street, City" required />
+            <label>Shop Name</label>
+            <input name="shopName" type="text" placeholder="Shop Name" required />
+          </div>
+          <div className="form-group">
+            <label>Building No</label>
+            <input name="buildingNo" type="text" placeholder="Building Number" required />
+          </div>
+          <div className="form-group">
+            <label>Landmark</label>
+            <input name="landmark" type="text" placeholder="Nearby Landmark (Optional)" />
+          </div>
+          <div className="form-group">
+            <label>Area</label>
+            <input name="area" type="text" placeholder="Area / Locality" required />
+          </div>
+          <div className="form-group">
+            <label>City</label>
+            <input name="city" type="text" placeholder="City" required />
+          </div>
+          <div className="form-group">
+            <label>State</label>
+            <input name="state" type="text" placeholder="State (Optional)" />
+          </div>
+          <div className="form-group">
+            <label>Pincode</label>
+            <input name="pincode" type="text" placeholder="Pincode" required />
           </div>
 
           <div className="form-group">

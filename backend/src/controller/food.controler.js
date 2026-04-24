@@ -15,13 +15,19 @@ export async function createFood(req, res) {
 
         console.log("CreateFood: Partner ID:", req.foodPartner?._id);
 
+        // Parse Hashtags
+        const extractedHashtags = req.body.description ? req.body.description.match(/#[a-zA-Z0-9_]+/g) || [] : [];
+        const parsedAddOns = req.body.addOns ? JSON.parse(req.body.addOns) : [];
+
         const foodItem = await foodModel.create({
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
             video: fileUploadResult.url,
             // FIX: Access ID from req.foodPartner (attached by middleware)
-            foodPartner: req.foodPartner._id
+            foodPartner: req.foodPartner._id,
+            hashtags: extractedHashtags,
+            addOns: parsedAddOns
         });
 
         res.status(201).json({
@@ -41,20 +47,24 @@ export async function createFood(req, res) {
 export async function getPartnerFoodItems(req, res) {
     try {
         const partnerId = req.foodPartner._id; // set by middleware
-        const foodItems = await foodModel.find({ foodPartner: partnerId });
+        const foodItems = await foodModel.find({ foodPartner: partnerId, isActive: { $ne: false } });
         res.status(200).json({ foodItems });
     } catch (err) {
         res.status(500).json({ message: "Failed to fetch your food", error: err.message });
     }
 }
 
-// Delete Food
+// Delete Food (Soft Delete)
 export async function deleteFood(req, res) {
     try {
         const { id } = req.params;
         const partnerId = req.foodPartner._id;
 
-        const food = await foodModel.findOneAndDelete({ _id: id, foodPartner: partnerId });
+        const food = await foodModel.findOneAndUpdate(
+            { _id: id, foodPartner: partnerId },
+            { isActive: false },
+            { new: true }
+        );
 
         if (!food) {
             return res.status(404).json({ message: "Food not found or unauthorized" });
@@ -73,9 +83,18 @@ export async function updateFood(req, res) {
         const partnerId = req.foodPartner._id;
         const { name, description, price } = req.body;
 
+        // Parse Hashtags
+        const extractedHashtags = description ? description.match(/#[a-zA-Z0-9_]+/g) || [] : [];
+        const parsedAddOns = req.body.addOns ? JSON.parse(req.body.addOns) : undefined; // Optional update
+
+        const updatePayload = { name, description, price, hashtags: extractedHashtags };
+        if (parsedAddOns !== undefined) {
+            updatePayload.addOns = parsedAddOns;
+        }
+
         const food = await foodModel.findOneAndUpdate(
             { _id: id, foodPartner: partnerId },
-            { name, description, price },
+            updatePayload,
             { new: true }
         );
 
@@ -93,10 +112,14 @@ export async function updateFood(req, res) {
 export async function getFoodItems(req, res) {
     try {
         const { type, lat, long } = req.query;
-        let query = {};
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = (page - 1) * limit;
+
+        let query = { isActive: { $ne: false } };
 
         if (type === 'nearby' && lat && long) {
-            // Find partners within 10km
+            // Find partners within 15km (Zone Delivery limit)
             const nearbyPartners = await foodPartnerModel.find({
                 location: {
                     $near: {
@@ -104,30 +127,60 @@ export async function getFoodItems(req, res) {
                             type: "Point",
                             coordinates: [parseFloat(long), parseFloat(lat)]
                         },
-                        $maxDistance: 10000 // 10km in meters
+                        $maxDistance: 15000 // 15km in meters
                     }
                 }
             }).select('_id');
 
             const partnerIds = nearbyPartners.map(p => p._id);
-            query = { foodPartner: { $in: partnerIds } };
+            query.foodPartner = { $in: partnerIds };
         }
 
-        // For global, query stays empty {} to get all foods
+        const totalItems = await foodModel.countDocuments(query);
 
-        const foodItems = await foodModel.find(query).populate('foodPartner', 'name location');
+        // Fetch paginated, sorted by newest to ensure stable pagination without duplicates
+        const foodItems = await foodModel.find(query)
+            .populate('foodPartner', 'name location attribute averageRating openingTime closingTime')
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
 
-        // If global, shuffle randomly
-        if (type === 'global') {
-            for (let i = foodItems.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [foodItems[i], foodItems[j]] = [foodItems[j], foodItems[i]];
-            }
+        // Add distance to the response if lat/long provided
+        let foodsWithDistance = foodItems;
+        if (lat && long) {
+            const userLat = parseFloat(lat);
+            const userLong = parseFloat(long);
+
+            // Haversine formula
+            const getDistance = (lat1, lon1, lat2, lon2) => {
+                const R = 6371; // km
+                const dLat = (lat2 - lat1) * (Math.PI / 180);
+                const dLon = (lon2 - lon1) * (Math.PI / 180);
+                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                return R * c;
+            };
+
+            foodsWithDistance = foodItems.map(food => {
+                const foodObj = food.toObject();
+                if (food.foodPartner && food.foodPartner.location && food.foodPartner.location.coordinates) {
+                    const [pLong, pLat] = food.foodPartner.location.coordinates;
+                    foodObj.distance = getDistance(userLat, userLong, pLat, pLong);
+                } else {
+                    foodObj.distance = null;
+                }
+                return foodObj;
+            });
         }
 
         res.status(200).json({
             success: true,
-            foodItems
+            foodItems: foodsWithDistance,
+            currentPage: page,
+            totalPages: Math.ceil(totalItems / limit),
+            hasMore: skip + foodItems.length < totalItems
         });
     } catch (err) {
         console.error("Get Food Error:", err);

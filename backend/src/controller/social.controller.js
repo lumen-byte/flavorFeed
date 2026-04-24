@@ -79,3 +79,76 @@ export async function getComments(req, res) {
         res.status(500).json({ message: "Error fetching comments", error: err.message });
     }
 }
+
+// Toggle Save a Reel
+export async function toggleSaveReel(req, res) {
+    try {
+        const { foodId } = req.body;
+        const userId = req.user._id;
+
+        const user = await userModel.findById(userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        const isSaved = user.savedReels.includes(foodId);
+
+        if (isSaved) {
+            user.savedReels = user.savedReels.filter(id => id.toString() !== foodId.toString());
+        } else {
+            user.savedReels.push(foodId);
+        }
+
+        await user.save();
+
+        res.status(200).json({
+            message: isSaved ? "Removed from saved reels" : "Saved to reels",
+            isSaved: !isSaved
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Error saving reel", error: err.message });
+    }
+}
+
+// Toggle Save a Restaurant
+export async function toggleSaveRestaurant(req, res) {
+    try {
+        const { partnerId } = req.body;
+        const userId = req.user._id;
+
+        const user = await userModel.findById(userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        const isSaved = user.savedRestaurants.includes(partnerId);
+
+        if (isSaved) {
+            user.savedRestaurants = user.savedRestaurants.filter(id => id.toString() !== partnerId.toString());
+        } else {
+            user.savedRestaurants.push(partnerId);
+        }
+
+        await user.save();
+
+        res.status(200).json({
+            message: isSaved ? "Removed from saved restaurants" : "Saved to restaurants",
+            isSaved: !isSaved
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Error saving restaurant", error: err.message });
+    }
+}
+
+// Get Saved Items (Populated)
+export async function getSavedItems(req, res) {
+    try {
+        const userId = req.user._id;
+        const user = await userModel.findById(userId)
+            .populate({ path: 'savedReels', populate: { path: 'foodPartner', select: 'name address' } })
+            .populate('savedRestaurants');
+
+        res.status(200).json({
+            savedReels: user.savedReels || [],
+            savedRestaurants: user.savedRestaurants || []
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching saved items", error: err.message });
+    }
+}

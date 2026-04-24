@@ -36,7 +36,9 @@ export async function registerUser(req, res) {
       user: {
         _id: user._id,
         email: user.email,
-        fullName: user.fullName
+        fullName: user.fullName,
+        savedReels: user.savedReels || [],
+        savedRestaurants: user.savedRestaurants || []
       }
     });
   } catch (error) {
@@ -64,15 +66,24 @@ export async function loginUser(req, res) {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
-    res.cookie("token", token)
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // or false for local dev
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
     res.status(200).json({
       message: "login successfully",
+      token,
       user: {
         _id: user._id,
         email: user.email,
-        fullName: user.fullName
+        fullName: user.fullName,
+        savedReels: user.savedReels || [],
+        savedRestaurants: user.savedRestaurants || []
       },
-    })
+    });
 
 
   } catch (error) {
@@ -87,7 +98,7 @@ export function logoutUser(req, res) {
 
 export async function registerFoodPartner(req, res) {
   try {
-    const { name, phone, address, contactName, email, password, lat, long } = req.body;
+    const { name, phone, addressDetails, contactName, email, password, lat, long } = req.body;
 
     // 1. Check if account already exists
     const isAccountAlreadyExists = await foodPartnerModel.findOne({ email });
@@ -104,7 +115,7 @@ export async function registerFoodPartner(req, res) {
     const foodpartner = await foodPartnerModel.create({
       name,
       email,
-      address,
+      addressDetails,
       contactName,
       phone,
       password: hashedPassword,
@@ -131,11 +142,12 @@ export async function registerFoodPartner(req, res) {
       .status(201)
       .json({
         message: "Food Partner registered successfully",
+        token,
         foodpartner: {
           _id: foodpartner._id,
           name: foodpartner.name,
           email: foodpartner.email,
-          address: foodpartner.address,
+          addressDetails: foodpartner.addressDetails,
           contactName: foodpartner.contactName,
           phone: foodpartner.phone,
         },
@@ -186,6 +198,7 @@ export async function loginFoodPartner(req, res) {
       .status(200)
       .json({
         message: "Food Partner logged in successfully",
+        token,
         foodpartner: {
           _id: foodpartner._id,
           name: foodpartner.name,

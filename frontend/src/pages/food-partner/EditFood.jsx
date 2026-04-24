@@ -27,7 +27,7 @@ const EditFood = () => {
             // For simplicity/security, let's fetch all partner foods and find the one.
             // Or better, add GET /api/food/:id to backend if not exists, but we have getFoodItems.
             // We can just use the partner/me endpoint I made.
-            const response = await axios.get('http://localhost:3000/api/food/partner/me', {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/food/partner/me`, {
                 withCredentials: true
             });
             const food = response.data.foodItems.find(f => f._id === id);
@@ -58,7 +58,7 @@ const EditFood = () => {
         e.preventDefault();
         setSubmitting(true);
         try {
-            await axios.put(`http://localhost:3000/api/food/${id}`, formData, {
+            await axios.put(`${import.meta.env.VITE_API_URL}/food/${id}`, formData, {
                 withCredentials: true
             });
             addToast("Food updated successfully! ✅", "success");

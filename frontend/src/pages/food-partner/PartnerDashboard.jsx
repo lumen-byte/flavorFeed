@@ -19,7 +19,7 @@ const PartnerDashboard = () => {
 
     const fetchMyFood = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/api/food/partner/me', {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/food/partner/me`, {
                 withCredentials: true
             });
             setFoodItems(response.data.foodItems);
@@ -36,7 +36,7 @@ const PartnerDashboard = () => {
         if (!window.confirm("Are you sure you want to delete this reel?")) return;
 
         try {
-            await axios.delete(`http://localhost:3000/api/food/${id}`, {
+            await axios.delete(`${import.meta.env.VITE_API_URL}/food/${id}`, {
                 withCredentials: true
             });
             // Remove from state

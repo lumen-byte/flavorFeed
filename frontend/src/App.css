@@ -1,6 +1,11 @@
 @import './styles/theme.css';
+@import './styles/Skeleton.css';
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   background-color: var(--bg-color);
@@ -14,12 +19,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px; /* More breathing room on top/bottom */
+  padding: 40px 20px;
+  /* More breathing room on top/bottom */
 }
 
 .auth-card {
   background: var(--card-bg);
-  padding: 3rem; /* Increased padding inside the card */
+  padding: 3rem;
+  /* Increased padding inside the card */
   border-radius: var(--radius);
   border: 1px solid var(--border);
   width: 100%;
@@ -28,8 +35,17 @@ body {
   text-align: center;
 }
 
-.auth-card h2 { font-size: 1.8rem; margin-bottom: 0.75rem; font-weight: 700; }
-.auth-card p { color: var(--text-muted); margin-bottom: 2.5rem; font-size: 1rem; }
+.auth-card h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.auth-card p {
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+  font-size: 1rem;
+}
 
 /* Role Switcher with more space */
 .role-switcher {
@@ -54,24 +70,31 @@ body {
 .role-btn.active {
   background: var(--card-bg);
   color: var(--primary);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.form-group { text-align: left; margin-bottom: 1.5rem; } /* More space between inputs */
+.form-group {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
 
-.form-group label { 
-  display: block; 
-  font-size: 0.85rem; 
-  margin-bottom: 8px; 
+/* More space between inputs */
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
   font-weight: 600;
   color: var(--text-main);
 }
 
 .auth-card input {
   width: 100%;
-  padding: 14px 18px; /* Bigger touch targets */
+  padding: 14px 18px;
+  /* Bigger touch targets */
   background: var(--input-bg);
-  border: 2px solid transparent; /* Hidden border until focus */
+  border: 2px solid transparent;
+  /* Hidden border until focus */
   border-radius: 12px;
   color: var(--text-main);
   font-size: 1rem;
@@ -100,8 +123,17 @@ body {
 
 .auth-btn:hover {
   background: var(--primary-hover);
-  transform: translateY(-2px); /* Lift effect */
+  transform: translateY(-2px);
+  /* Lift effect */
 }
 
-.auth-footer { margin-top: 2rem; font-size: 0.95rem; }
-.auth-footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
+.auth-footer {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+}
+
+.auth-footer a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}

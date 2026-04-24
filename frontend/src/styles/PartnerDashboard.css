@@ -103,3 +103,115 @@
     font-size: 1rem !important;
     margin-bottom: 5px;
 }
+
+/* Social Metrics Display */
+.social-metrics {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dotted #444;
+}
+
+.metric {
+    font-size: 0.85rem;
+    color: #ffd700;
+    /* Gold color for likes */
+    font-weight: bold;
+}
+
+.metric.clickable {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #3498db;
+}
+
+/* Comments Modal Styles */
+.partner-comments-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.partner-comments-content {
+    background: #1e1e1e;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.comments-list {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.partner-comment-item {
+    background: #2a2a2a;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.comment-bubble strong {
+    color: #ff4757;
+    font-size: 0.85rem;
+}
+
+.comment-bubble p {
+    margin: 5px 0 10px;
+    font-size: 0.95rem;
+}
+
+.reply-section {
+    display: flex;
+    gap: 10px;
+}
+
+.reply-section input {
+    flex: 1;
+    background: #111;
+    border: 1px solid #444;
+    color: white;
+    padding: 8px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.reply-section button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}

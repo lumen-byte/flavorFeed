@@ -1,5 +1,6 @@
 .feed-container {
-    height: 100vh;
+    height: calc(100dvh - 125px);
+    /* Subtract TopNav (60px) + BottomNav (65px) */
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
     background-color: black;
@@ -47,7 +48,8 @@
 }
 
 .no-reels {
-    height: 100vh;
+    height: 100%;
+    /* Responsive to the feed-container */
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -27,7 +27,20 @@ const foodSchema = new mongoose.Schema({
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
-    }]
-})
+    }],
+    hashtags: [{
+        type: String,
+        trim: true
+    }],
+    addOns: [{
+        name: { type: String, required: true },
+        price: { type: Number, required: true },
+        maxQuantity: { type: Number, default: 1 }
+    }],
+    isActive: {
+        type: Boolean,
+        default: true
+    }
+}, { timestamps: true });
 const foodModel = mongoose.model("Food", foodSchema);
 export default foodModel;

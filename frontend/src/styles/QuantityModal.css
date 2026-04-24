@@ -1,0 +1,194 @@
+/* Bottom Sheet Overlay Background */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    /* Push to bottom for Bottom Sheet feel */
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.2s ease;
+}
+
+/* Bottom Sheet Container */
+.modal-content.bottom-sheet {
+    background: var(--card-bg, white);
+    padding: 24px;
+    border-radius: 24px 24px 0 0;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    color: var(--text-main, #333);
+    animation: slideUpSheet 0.3s cubic-bezier(0.175, 0.885, 0.32, 1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+    /* Safe padding for modern iPhones */
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+}
+
+.drag-handle {
+    width: 40px;
+    height: 5px;
+    background: #ddd;
+    border-radius: 5px;
+    margin: 0 auto 15px auto;
+}
+
+.modal-content h3 {
+    margin-bottom: 5px;
+    color: var(--text-main, #111);
+    font-size: 1.3rem;
+}
+
+.food-name-header {
+    font-size: 1rem;
+    color: var(--primary, #ff4757);
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Add-ons Section */
+.add-ons-section {
+    background: var(--role-bg, #f8f9fa);
+    padding: 15px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border, #eee);
+}
+
+.addon-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--border, #eee);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.addon-row:last-child {
+    border-bottom: none;
+}
+
+.addon-row.selected .checkbox {
+    color: var(--primary, #ff4757);
+}
+
+.addon-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.checkbox {
+    font-size: 1.3rem;
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+.addon-price {
+    font-weight: 600;
+    color: var(--text-muted, #666);
+    font-size: 0.9rem;
+}
+
+/* Stepper UI */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.qty-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid var(--primary, #ff4757);
+    background: transparent;
+    color: var(--primary, #ff4757);
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.qty-btn:hover,
+.qty-btn:active {
+    background: var(--primary, #ff4757);
+    color: white;
+    transform: scale(0.95);
+}
+
+.qty-display {
+    font-size: 1.8rem;
+    font-weight: bold;
+    min-width: 30px;
+}
+
+/* Bottom Buttons */
+.modal-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+    transition: transform 0.2s;
+}
+
+.modal-actions button:active {
+    transform: scale(0.95);
+}
+
+.cancel-btn {
+    background: var(--role-bg, #f1f2f6);
+    color: var(--text-main, #333);
+    flex: 0.5;
+    /* Takes less space */
+}
+
+.confirm-btn {
+    background: var(--primary, #ff4757);
+    color: white;
+    flex: 1.5;
+    /* Takes more space to emphasize primary action */
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUpSheet {
+    from {
+        transform: translateY(100%);
+        opacity: 0.5;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

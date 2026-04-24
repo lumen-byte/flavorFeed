@@ -20,7 +20,7 @@ const UserProfile = () => {
 
     const fetchOrders = async () => {
         try {
-            const res = await axios.get('http://localhost:3000/api/order/my-orders', { withCredentials: true });
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/order/my-orders`, { withCredentials: true });
             setOrders(res.data.orders);
         } catch (err) {
             console.error("Failed to fetch orders", err);

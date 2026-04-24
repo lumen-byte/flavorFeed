@@ -5,21 +5,29 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { ToastProvider } from './context/ToastContext';
 import { LocationProvider } from './context/LocationContext';
-import Navbar from './components/Navbar';
+import ErrorBoundary from './components/ErrorBoundary';
+import GlobalLayout from './components/GlobalLayout';
 
 function App() {
   return (
     <div className="app-container">
-      <AuthProvider>
-        <CartProvider>
-          <ToastProvider>
-            <LocationProvider>
-              <Navbar />
-              <AppRoutes />
-            </LocationProvider>
-          </ToastProvider>
-        </CartProvider>
-      </AuthProvider>
+      {/* CONCEPT: Error Boundary caught exceptions don't rip down the entire React tree */}
+      <ErrorBoundary>
+        <AuthProvider>
+          <CartProvider>
+            <ToastProvider>
+              <LocationProvider>
+
+                {/* CONCEPT: GlobalLayout encapsulates fixed headers so routes don't worry about safe-areas */}
+                <GlobalLayout>
+                  <AppRoutes />
+                </GlobalLayout>
+
+              </LocationProvider>
+            </ToastProvider>
+          </CartProvider>
+        </AuthProvider>
+      </ErrorBoundary>
     </div>
   );
 }

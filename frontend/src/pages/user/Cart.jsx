@@ -1,51 +1,72 @@
 import React, { useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import EmptyState from '../../components/EmptyState';
 import '../../styles/Cart.css'; // We'll create this
 
 const Cart = () => {
-    const { cart, fetchCart } = useCart();
+    const { cart, loadingCart, fetchCart } = useCart();
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchCart();
     }, []);
 
-    // Group items by Restaurant
-    const groupedItems = cart.reduce((acc, item) => {
-        const partnerName = item.foodId?.foodPartner?.name || "Unknown Restaurant";
-        const partnerId = item.foodId?.foodPartner?._id || "unknown";
+    // Group items by Restaurant, memoized for performance
+    const { groupedItems, subtotal, grandTotal, totalDeliveryFee } = React.useMemo(() => {
+        const grouped = cart.reduce((acc, item) => {
+            const partnerName = item.foodId?.foodPartner?.name || "Unknown Restaurant";
+            const partnerId = item.foodId?.foodPartner?._id || "unknown";
 
-        if (!acc[partnerId]) {
-            acc[partnerId] = {
-                name: partnerName,
-                items: [],
-                subtotal: 0
-            };
-        }
+            if (!acc[partnerId]) {
+                acc[partnerId] = {
+                    name: partnerName,
+                    items: [],
+                    subtotal: 0
+                };
+            }
 
-        const price = item.foodId?.price || 0;
-        const itemTotal = price * item.quantity;
+            const price = item.foodId?.price || 0;
+            const itemTotal = price * item.quantity;
 
-        acc[partnerId].items.push(item);
-        acc[partnerId].subtotal += itemTotal;
+            acc[partnerId].items.push(item);
+            acc[partnerId].subtotal += itemTotal;
 
-        return acc;
-    }, {});
+            return acc;
+        }, {});
+
+        const DELIVERY_FEE = 40;
+        const totalDelFee = Object.keys(grouped).length * DELIVERY_FEE;
+        const sub = cart.reduce((acc, item) => acc + (item.quantity * (item.foodId?.price || 0)), 0);
+        const grand = sub + totalDelFee;
+
+        return { groupedItems: grouped, subtotal: sub, grandTotal: grand, totalDeliveryFee: totalDelFee };
+    }, [cart]);
 
     const DELIVERY_FEE_PER_RESTAURANT = 40;
-    const totalDeliveryFee = Object.keys(groupedItems).length * DELIVERY_FEE_PER_RESTAURANT;
-    const subtotal = cart.reduce((acc, item) => acc + (item.quantity * (item.foodId?.price || 0)), 0);
-    const grandTotal = subtotal + totalDeliveryFee;
+
+    if (loadingCart) {
+        return (
+            <div className="cart-page">
+                <h2>Your Cart 🛒</h2>
+                <div style={{ textAlign: 'center', padding: '50px', color: '#fff' }}>
+                    Loading cart items...
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="cart-page">
             <h2>Your Cart 🛒</h2>
             {cart.length === 0 ? (
-                <div className="empty-cart">
-                    <p>Your cart is empty.</p>
-                    <button onClick={() => navigate('/')}>Go Eat!</button>
-                </div>
+                <EmptyState
+                    icon="🛒"
+                    title="Your cart is empty"
+                    subtitle="Looks like you haven't added any delicious food yet."
+                    actionText="Browse Restaurants"
+                    actionLink="/"
+                />
             ) : (
                 <div className="cart-container">
                     <div className="cart-groups">

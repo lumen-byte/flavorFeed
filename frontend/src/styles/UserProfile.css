@@ -98,10 +98,120 @@
     margin-bottom: 5px;
 }
 
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #333;
+    padding-top: 15px;
+    margin-top: 10px;
+}
+
 .order-total {
-    text-align: right;
     font-size: 1.1rem;
     color: #fff;
-    border-top: 1px solid #333;
-    padding-top: 10px;
+}
+
+.rate-order-btn {
+    background: #444;
+    color: white;
+    border: 1px solid #555;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+
+.rate-order-btn:hover {
+    background: #ff4757;
+    border-color: #ff4757;
+}
+
+.order-rating-display {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+/* Profile Tabs */
+.profile-tabs-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #333;
+}
+
+.profile-tab {
+    background: transparent;
+    color: #888;
+    border: none;
+    font-size: 1.1rem;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.profile-tab.active {
+    color: #fff;
+}
+
+.profile-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #ff4757;
+    border-radius: 3px 3px 0 0;
+}
+
+/* Saved Section */
+.saved-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.saved-card {
+    position: relative;
+    aspect-ratio: 9/16;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #252525;
+}
+
+.saved-video-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.saved-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 10px 10px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+    display: flex;
+    flex-direction: column;
+}
+
+.saved-info strong {
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.saved-info small {
+    font-size: 0.7rem;
+    color: #ccc;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

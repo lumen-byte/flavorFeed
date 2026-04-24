@@ -1,0 +1,113 @@
+.location-title {
+    margin-bottom: 25px !important;
+    font-size: 1.25rem !important;
+}
+
+.location-option {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    border: 1px solid var(--border, #eee);
+    background: var(--card-bg, #fff);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: left;
+}
+
+@media (prefers-color-scheme: dark) {
+    .location-option {
+        background: #1a1a1a;
+        border-color: #333;
+    }
+}
+
+.location-option:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.location-option:active {
+    transform: scale(0.98);
+}
+
+.location-option.active {
+    border-color: var(--primary, #ff4757);
+    background: rgba(255, 71, 87, 0.05);
+}
+
+.location-option.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.loc-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    background: var(--role-bg, #f1f2f6);
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+@media (prefers-color-scheme: dark) {
+    .loc-icon {
+        background: #333;
+    }
+}
+
+.location-option.active .loc-icon {
+    background: var(--primary, #ff4757);
+    color: white;
+}
+
+.loc-details {
+    flex: 1;
+}
+
+.loc-details h4 {
+    margin: 0 0 4px 0;
+    font-size: 1rem;
+    color: var(--text-main, #333);
+}
+
+.loc-details p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted, #777);
+}
+
+.check-icon {
+    color: var(--primary, #ff4757);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.location-search-box {
+    margin-bottom: 20px;
+}
+
+.location-search-input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border, #333);
+    background: var(--card-bg, #1e1e1e);
+    color: var(--text-main, #fff);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.location-search-input:focus {
+    border-color: var(--primary, #ff4757);
+}
+
+.location-results {
+    max-height: 250px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}

@@ -57,6 +57,14 @@ const orderSchema = new mongoose.Schema({
             type: [Number],
             required: true
         }
+    },
+    rating: {
+        type: Number,
+        min: 1,
+        max: 5
+    },
+    reviewText: {
+        type: String
     }
 }, { timestamps: true });
 

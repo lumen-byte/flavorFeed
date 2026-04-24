@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
+import { connectSocket, disconnectSocket } from '../services/socket';
+
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -10,23 +12,27 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Check if user is logged in (e.g. check local storage or hit /me endpoint)
-        // For MVP, we'll try to persist via localStorage for now or rely on cookies + a verify endpoint.
-        // Let's assume we store user info in localStorage for simplicity in this pass, 
-        // or better, hit an endpoint if cookies are HttpOnly.
-        // Given backend uses cookies, we should hit a /me endpoint or just check localStorage if we saved there.
         const storedUser = localStorage.getItem('user');
-        if (storedUser) {
+        const storedToken = localStorage.getItem('token');
+        if (storedUser && storedToken) {
             setUser(JSON.parse(storedUser));
+            connectSocket();
+        } else {
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
         }
         setLoading(false);
     }, []);
 
     const login = async (email, password) => {
         try {
-            const res = await axios.post('http://localhost:3000/api/auth/user/login', { email, password }, { withCredentials: true });
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/user/login`, { email, password }, { withCredentials: true });
             setUser(res.data.user); // Assuming API returns { user: ... }
             localStorage.setItem('user', JSON.stringify(res.data.user));
+            if (res.data.token) {
+                localStorage.setItem('token', res.data.token);
+                connectSocket();
+            }
             return res.data;
         } catch (err) {
             throw err;
@@ -35,8 +41,13 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (userData) => {
         try {
-            const res = await axios.post('http://localhost:3000/api/auth/user/register', userData, { withCredentials: true });
-            // Automatic login or redirect?
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/user/register`, userData, { withCredentials: true });
+            if (res.data.token) {
+                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('user', JSON.stringify(res.data.user));
+                setUser(res.data.user);
+                connectSocket();
+            }
             return res.data;
         } catch (err) {
             throw err;
@@ -47,6 +58,8 @@ export const AuthProvider = ({ children }) => {
         // axios.post('/api/auth/logout') ...
         setUser(null);
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        disconnectSocket();
     };
 
     const value = {

@@ -21,7 +21,7 @@ export const CartProvider = ({ children }) => {
 
     const fetchCart = async () => {
         try {
-            const res = await axios.get('http://localhost:3000/api/order/cart', { withCredentials: true });
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/order/cart`, { withCredentials: true });
             setCart(res.data.cart);
         } catch (err) {
             console.error("Failed to fetch cart", err);
@@ -33,7 +33,7 @@ export const CartProvider = ({ children }) => {
             return false;
         }
         try {
-            const res = await axios.post('http://localhost:3000/api/order/cart',
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/order/cart`,
                 { foodId, quantity },
                 { withCredentials: true }
             );

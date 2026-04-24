@@ -51,7 +51,7 @@ const ReelCard = ({ food, isActive }) => {
         setLikes(isLiked ? likes - 1 : likes + 1);
 
         try {
-            const res = await axios.post('http://localhost:3000/api/social/like', { foodId: food._id }, { withCredentials: true });
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/social/like`, { foodId: food._id }, { withCredentials: true });
 
             // Sync with server source of truth
             setLikes(res.data.likesCount);
@@ -73,7 +73,7 @@ const ReelCard = ({ food, isActive }) => {
 
     const fetchComments = async () => {
         try {
-            const res = await axios.get(`http://localhost:3000/api/social/comments/${food._id}`, { withCredentials: true });
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/social/comments/${food._id}`, { withCredentials: true });
             setComments(res.data.comments);
         } catch (err) {
             console.error("Fetch comments error", err);
@@ -89,7 +89,7 @@ const ReelCard = ({ food, isActive }) => {
         }
 
         try {
-            const res = await axios.post('http://localhost:3000/api/social/comment', {
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/social/comment`, {
                 foodId: food._id,
                 text: newComment
             }, { withCredentials: true });

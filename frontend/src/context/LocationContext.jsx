@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { LocationService } from '../services/LocationService';
 
 const LocationContext = createContext();
 
@@ -8,6 +9,12 @@ export const LocationProvider = ({ children }) => {
     const [location, setLocation] = useState(null); // { lat, long, address }
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const setLocationManually = (lat, long, address) => {
+        const newLoc = { lat, long, address };
+        setLocation(newLoc);
+        localStorage.setItem('userLoc', JSON.stringify(newLoc));
+    };
 
     const fetchLocation = () => {
         setLoading(true);
@@ -20,18 +27,12 @@ export const LocationProvider = ({ children }) => {
         navigator.geolocation.getCurrentPosition(
             async (position) => {
                 const { latitude, longitude } = position.coords;
-                // Mock address for now since we don't have a reverse geocoding API
-                // In a real app, use Google Maps API or OpenStreetMap here
-                const mockAddress = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
-
-                setLocation({
-                    lat: latitude,
-                    long: longitude,
-                    address: mockAddress // Or "Current Location"
-                });
+                const addressText = await LocationService.reverseGeocode(latitude, longitude);
+                setLocationManually(latitude, longitude, addressText);
                 setLoading(false);
             },
             (err) => {
+                console.error("Geolocation error", err);
                 setError("Unable to retrieve your location");
                 setLoading(false);
             }
@@ -39,11 +40,21 @@ export const LocationProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        fetchLocation();
+        const savedLoc = localStorage.getItem('userLoc');
+        if (savedLoc) {
+            try {
+                setLocation(JSON.parse(savedLoc));
+                setLoading(false);
+            } catch (e) {
+                fetchLocation();
+            }
+        } else {
+            fetchLocation();
+        }
     }, []);
 
     return (
-        <LocationContext.Provider value={{ location, loading, error, fetchLocation }}>
+        <LocationContext.Provider value={{ location, loading, error, fetchLocation, setLocationManually }}>
             {children}
         </LocationContext.Provider>
     );
