@@ -6,8 +6,9 @@ import foodPartnerModel from './models/foodpartner.model.js';
 export function initializeSocket(server) {
   const io = new Server(server, {
     cors: {
-      origin: '*', // For development
-      methods: ['GET', 'POST']
+      origin: process.env.FRONTEND_URL || '*',
+      methods: ['GET', 'POST'],
+      credentials: true
     }
   });
 

@@ -10,10 +10,7 @@ import cors from 'cors';
 const app = express();
 
 app.use(cors({
-    origin: function(origin, callback) {
-        // Allow all origins directly
-        callback(null, true);
-    },
+    origin: process.env.FRONTEND_URL || '*',
     credentials: true,
 }))
 app.use(cookieParser());
