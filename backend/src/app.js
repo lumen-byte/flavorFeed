@@ -24,7 +24,12 @@ app.use('/api/order', orderRoutes);
 app.use('/api/conversations', chatRoutes);
 
 app.get('/', (req, res) => {
-    res.send('Hello from the backend server!');
+    res.status(200).json({
+        status: 'online',
+        message: 'FlavorFeed API is running',
+        timestamp: new Date().toISOString(),
+        env: process.env.NODE_ENV || 'development'
+    });
 });
 
 export default app;
