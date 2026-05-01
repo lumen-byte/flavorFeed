@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axiosInstance from '../../api/axiosInstance';
 import { socket } from '../../services/socket';
 import { useAuth } from '../../context/AuthContext';
 import MessageBubble from '../../components/chat/MessageBubble';
 import { Send, User as UserIcon } from 'lucide-react';
+import '../../styles/ChatInbox.css';
 
 const ChatInbox = () => {
   const { user } = useAuth();
@@ -14,7 +15,7 @@ const ChatInbox = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [otherUserTyping, setOtherUserTyping] = useState(false);
   const [loading, setLoading] = useState(true);
-  
+
   const messagesEndRef = useRef(null);
   const typingTimeoutRef = useRef(null);
 
@@ -24,7 +25,7 @@ const ChatInbox = () => {
 
   useEffect(() => {
     if (!activeChat) return;
-    
+
     fetchMessages(activeChat._id);
     socket.emit('join_conversation', activeChat._id);
 
@@ -32,7 +33,6 @@ const ChatInbox = () => {
       if (message.conversationId === activeChat._id) {
         setMessages((prev) => [...prev, message]);
         scrollToBottom();
-        // Mark as seen
         if (message.sender._id !== user._id) {
           socket.emit('mark_seen', { conversationId: activeChat._id, messageIds: [message._id] });
         }
@@ -40,9 +40,7 @@ const ChatInbox = () => {
     };
 
     const handleTyping = (data) => {
-      if (data.userId !== user._id) {
-        setOtherUserTyping(data.isTyping);
-      }
+      if (data.userId !== user._id) setOtherUserTyping(data.isTyping);
     };
 
     socket.on('receive_message', handleReceiveMessage);
@@ -57,9 +55,7 @@ const ChatInbox = () => {
   const fetchConversations = async () => {
     try {
       setLoading(true);
-      const res = await axiosInstance.get('/auth/conversations'); // using /api/conversations 
-      // wait, the app uses /api/conversations. My route was app.use('/api/conversations', chatRoutes)
-      // Wait, let's fix the path
+      const res = await axiosInstance.get('/auth/conversations');
       setConversations(res.data);
     } catch (err) {
       console.error(err);
@@ -94,9 +90,9 @@ const ChatInbox = () => {
       sender: user,
       messageType: 'text',
       content: inputText,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
-    
+
     setMessages((prev) => [...prev, tempMsg]);
     scrollToBottom();
     setInputText('');
@@ -105,13 +101,10 @@ const ChatInbox = () => {
     try {
       const res = await axiosInstance.post(`/conversations/${activeChat._id}/messages`, {
         content: tempMsg.content,
-        messageType: 'text'
+        messageType: 'text',
       });
-      
       socket.emit('send_message', res.data);
-      
-      // Update with actual DB message
-      setMessages((prev) => prev.map(m => m._id === tempMsg._id ? res.data : m));
+      setMessages((prev) => prev.map((m) => (m._id === tempMsg._id ? res.data : m)));
     } catch (err) {
       console.error('Failed to send message', err);
     }
@@ -124,12 +117,10 @@ const ChatInbox = () => {
 
   const handleInputChange = (e) => {
     setInputText(e.target.value);
-    
     if (!isTyping) {
       setIsTyping(true);
       handleTypingChange(true);
     }
-    
     clearTimeout(typingTimeoutRef.current);
     typingTimeoutRef.current = setTimeout(() => {
       setIsTyping(false);
@@ -137,48 +128,48 @@ const ChatInbox = () => {
     }, 2000);
   };
 
-  const getOtherParticipant = (conversation) => {
-    return conversation.participants.find(p => p._id !== user._id) || conversation.participants[0];
-  };
+  const getOtherParticipant = (conversation) =>
+    conversation.participants.find((p) => p._id !== user._id) || conversation.participants[0];
 
   return (
-    <div className="flex h-[calc(100vh-80px)] bg-gray-50 overflow-hidden">
-      {/* Left Panel: Conversations List */}
-      <div className="w-1/3 border-r bg-white flex flex-col">
-        <div className="p-4 border-b">
-          <h2 className="text-xl font-bold">Messages</h2>
+    <div className={`chat-layout${activeChat ? ' has-active' : ''}`}>
+      {/* ── Left Sidebar ── */}
+      <div className="chat-sidebar">
+        <div className="chat-sidebar-header">
+          <h2>Messages</h2>
         </div>
-        <div className="flex-1 overflow-y-auto">
+
+        <div className="chat-conversations">
           {loading ? (
-            <div className="p-4 space-y-4">
-              {[1,2,3].map(i => (
-                <div key={i} className="flex gap-3 animate-pulse">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
-                  <div className="flex-1 space-y-2 py-1">
-                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                    <div className="h-3 bg-gray-200 rounded w-3/4"></div>
-                  </div>
+            [1, 2, 3].map((i) => (
+              <div key={i} className="chat-skeleton-item">
+                <div className="skeleton chat-skeleton-avatar" />
+                <div className="chat-skeleton-lines">
+                  <div className="skeleton chat-skeleton-line short" />
+                  <div className="skeleton chat-skeleton-line long" />
                 </div>
-              ))}
-            </div>
+              </div>
+            ))
           ) : (
             conversations.map((conv) => {
-              const otherUser = getOtherParticipant(conv);
+              const other = getOtherParticipant(conv);
               return (
-                <div 
+                <div
                   key={conv._id}
                   onClick={() => setActiveChat(conv)}
-                  className={`p-4 border-b flex items-center gap-3 cursor-pointer hover:bg-gray-50 transition-colors ${activeChat?._id === conv._id ? 'bg-blue-50' : ''}`}
+                  className={`conversation-item${activeChat?._id === conv._id ? ' active' : ''}`}
                 >
-                  <div className="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-lg">
-                    {otherUser.fullName.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold truncate">{otherUser.fullName}</h3>
-                    <p className="text-sm text-gray-500 truncate">
-                      {conv.lastMessage?.messageType === 'text' ? conv.lastMessage.content : 
-                       conv.lastMessage?.messageType === 'reel_share' ? 'Shared a reel' :
-                       conv.lastMessage?.messageType === 'food_share' ? 'Shared food' : 'No messages yet'}
+                  <div className="conv-avatar">{other.fullName.charAt(0).toUpperCase()}</div>
+                  <div className="conv-info">
+                    <h3>{other.fullName}</h3>
+                    <p>
+                      {conv.lastMessage?.messageType === 'text'
+                        ? conv.lastMessage.content
+                        : conv.lastMessage?.messageType === 'reel_share'
+                        ? 'Shared a reel'
+                        : conv.lastMessage?.messageType === 'food_share'
+                        ? 'Shared food'
+                        : 'No messages yet'}
                     </p>
                   </div>
                 </div>
@@ -188,66 +179,70 @@ const ChatInbox = () => {
         </div>
       </div>
 
-      {/* Right Panel: Chat Area */}
-      <div className="flex-1 flex flex-col bg-[#f0f2f5]">
+      {/* ── Right Panel ── */}
+      <div className="chat-main">
         {activeChat ? (
           <>
-            {/* Chat Header (Glassmorphism) */}
-            <div className="h-16 px-4 flex items-center gap-3 border-b z-10 sticky top-0" style={{ backgroundColor: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(12px)' }}>
-               <div className="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold">
-                  {getOtherParticipant(activeChat).fullName.charAt(0).toUpperCase()}
-                </div>
-                <div>
-                  <h3 className="font-semibold">{getOtherParticipant(activeChat).fullName}</h3>
-                  {otherUserTyping && <p className="text-xs text-blue-500">Typing...</p>}
-                </div>
+            {/* Header */}
+            <div className="chat-header">
+              <div className="chat-header-avatar">
+                {getOtherParticipant(activeChat).fullName.charAt(0).toUpperCase()}
+              </div>
+              <div className="chat-header-info">
+                <h3>{getOtherParticipant(activeChat).fullName}</h3>
+                {otherUserTyping && (
+                  <p className="chat-typing-indicator">Typing…</p>
+                )}
+              </div>
             </div>
 
-            {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {/* Messages */}
+            <div className="chat-messages">
               {messages.map((msg) => (
-                <MessageBubble 
-                  key={msg._id} 
-                  message={msg} 
-                  isOwnMessage={msg.sender._id === user._id || msg.sender === user._id} 
+                <MessageBubble
+                  key={msg._id}
+                  message={msg}
+                  isOwnMessage={msg.sender._id === user._id || msg.sender === user._id}
                 />
               ))}
+
               {otherUserTyping && (
-                 <div className="flex justify-start mb-4 animate-slide-up">
-                  <div className="bg-gray-100 text-gray-800 rounded-2xl rounded-bl-sm p-3 w-16 flex justify-center items-center gap-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0s'}}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.4s'}}></div>
+                <div className="typing-bubble">
+                  <div className="typing-dots">
+                    <div className="typing-dot" />
+                    <div className="typing-dot" />
+                    <div className="typing-dot" />
                   </div>
-                 </div>
+                </div>
               )}
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Area */}
-            <div className="p-4 bg-white border-t">
-              <form onSubmit={handleSendMessage} className="flex gap-2">
-                <input 
-                  type="text" 
+            {/* Input */}
+            <div className="chat-input-area">
+              <form onSubmit={handleSendMessage} className="chat-input-form">
+                <input
+                  type="text"
                   value={inputText}
                   onChange={handleInputChange}
-                  placeholder="Type a message..."
-                  className="flex-1 bg-gray-100 border-none rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                  placeholder="Type a message…"
+                  className="chat-text-input"
                 />
-                <button 
+                <button
                   type="submit"
                   disabled={!inputText.trim()}
-                  className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 disabled:opacity-50 transition-colors flex items-center justify-center w-10 h-10"
+                  className="chat-send-btn"
+                  aria-label="Send message"
                 >
-                  <Send size={18} />
+                  <Send size={16} />
                 </button>
               </form>
             </div>
           </>
         ) : (
-          <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
-            <UserIcon size={64} className="mb-4 opacity-20" />
-            <p className="text-xl">Select a conversation to start chatting</p>
+          <div className="chat-empty-state">
+            <UserIcon size={64} className="chat-empty-icon" />
+            <p>Select a conversation to start chatting</p>
           </div>
         )}
       </div>

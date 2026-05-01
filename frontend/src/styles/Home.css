@@ -1,71 +1,71 @@
+/* ─── Home / Feed container ────────────────────────────────────────────────── */
 .home-container {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    background-color: black;
-    overflow: hidden;
-    /* Feed handles scroll */
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background: var(--ff-text-primary); /* video feed stays near-black */
+  overflow: hidden;
 }
 
-/* Tab Header */
+/* Feed tab pill — floats over the video feed */
 .feed-tabs {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    display: flex;
-    gap: 20px;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 8px 20px;
-    border-radius: 30px;
-    backdrop-filter: blur(10px);
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  gap: 20px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 8px 20px;
+  border-radius: var(--ff-radius-pill);
+  backdrop-filter: blur(10px);
 }
 
 .tab-btn {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    position: relative;
-    transition: color 0.3s;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--ff-font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s;
 }
 
 .tab-btn.active {
-    color: white;
+  color: var(--ff-bg);
 }
 
 .tab-btn.active::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 2px;
-    background-color: #ff4757;
-    border-radius: 2px;
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--ff-gradient);
+  border-radius: 2px;
 }
 
 .location-request {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    text-align: center;
-    z-index: 10;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--ff-bg);
+  text-align: center;
+  z-index: 10;
 }
 
 .location-btn {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: #ff4757;
-    border: none;
-    color: white;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: var(--ff-gradient);
+  border: none;
+  color: var(--ff-bg);
+  border-radius: var(--ff-radius-pill);
+  font-weight: 600;
+  cursor: pointer;
 }

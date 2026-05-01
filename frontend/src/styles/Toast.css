@@ -1,55 +1,50 @@
+/* ─── Toast Notification ───────────────────────────────────────────────────── */
 .toast-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  position: fixed;
+  bottom: 80px;      /* above the bottom nav */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
 }
 
 .toast {
-    background: #333;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-width: 250px;
-    animation: slideIn 0.3s ease-out;
+  background: var(--ff-text-primary);
+  color: var(--ff-bg);
+  padding: 10px 20px;
+  border-radius: var(--ff-radius-sm);
+  box-shadow: var(--ff-shadow-modal);
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 220px;
+  max-width: 90vw;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  animation: toastIn 0.22s ease forwards;
+  pointer-events: all;
 }
 
-.toast-success {
-    background: #27ae60;
-}
-
-.toast-error {
-    background: #e74c3c;
-}
-
-.toast-info {
-    background: #3498db;
-}
+/* Semantic variants — keep text readable on dark bg */
+.toast-success { background: var(--ff-text-primary); }
+.toast-error   { background: var(--ff-error); }
+.toast-info    { background: var(--ff-link); }
 
 .toast-close {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin-left: 10px;
+  background: none;
+  border: none;
+  color: var(--ff-bg);
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 6px;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
 }
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
+.toast-close:hover { opacity: 1; }

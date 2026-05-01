@@ -1,46 +1,31 @@
-/* CONCEPT: Skeleton Loaders 
-   Skeletons use a highly optimized CSS animation (`linear-gradient` shifting) to simulate loading.
-   This feels inherently faster to the human brain than a spinning circle because the layout doesn't jump
-   when the real content eventually loads.
-*/
-
+/* ─── Skeleton Loaders ─────────────────────────────────────────────────────── */
+/* Light-mode shimmer — overrides any old dark skeleton from App.css */
 .skeleton {
-    background: #e0e0e0;
-    background: linear-gradient(110deg,
-            #2a2a2a 8%,
-            #333333 18%,
-            #2a2a2a 33%);
-    border-radius: 5px;
-    background-size: 200% 100%;
-    animation: 1.5s shine linear infinite;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: var(--ff-radius-sm);
 }
 
-/* Specific shapes for different UI elements */
 .skeleton-text {
-    height: 12px;
-    margin-bottom: 8px;
-    border-radius: 4px;
+  height: 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
 }
 
 .skeleton-text.title {
-    height: 20px;
-    width: 60%;
-    margin-bottom: 15px;
+  height: 20px;
+  width: 60%;
+  margin-bottom: 15px;
 }
 
 .skeleton-circle {
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
 .skeleton-card {
-    height: 120px;
-    width: 100%;
-    border-radius: 12px;
-    margin-bottom: 15px;
-}
-
-@keyframes shine {
-    to {
-        background-position-x: -200%;
-    }
+  height: 120px;
+  width: 100%;
+  border-radius: var(--ff-radius-md);
+  margin-bottom: 15px;
 }

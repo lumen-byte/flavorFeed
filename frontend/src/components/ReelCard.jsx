@@ -134,43 +134,69 @@ const ReelCard = ({ food, isActive }) => {
         }
     };
 
+    const handleDoubleClick = () => {
+        if (!isLiked) handleLike();
+        // Trigger animation
+        const heart = document.getElementById(`heart-pop-${food._id}`);
+        if (heart) {
+            heart.classList.add('animate');
+            setTimeout(() => heart.classList.remove('animate'), 800);
+        }
+    };
+
     return (
-        <div className="reel-card">
+        <div className="reel-card" onDoubleClick={handleDoubleClick}>
             <video
                 ref={videoRef}
-                src={food.video ? `${food.video}?tr=w-720,q-60,f-mp4` : ''}
-                poster={food.image ? `${food.image}?tr=w-720,q-50,f-webp` : ''}
+                src={food.video}
+                poster={food.thumbnail}
                 className="reel-video"
                 loop
                 muted={false}
                 playsInline
-                preload="none"
+                style={{ objectFit: 'cover' }}
+                preload="metadata"
                 onClick={toggleComments}
             />
 
+            <div id={`heart-pop-${food._id}`} className="heart-pop-overlay">❤️</div>
+
             {!showComments && (
                 <div className="reel-overlay">
-                    <div className="reel-info">
+                    <div className="reel-info animate-fade-up">
+                        <div className="partner-info-card">
+                            <div className="reel-avatar-ring">
+                                <div className="inner">
+                                    <div className="nav-profile" style={{ width: '32px', height: '32px' }}>
+                                        {food.foodPartner?.name?.charAt(0)}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="partner-details">
+                                <span className="partner-name">{food.foodPartner?.name}</span>
+                                <small>📍 {food.foodPartner?.location?.address || 'Nearby'}</small>
+                            </div>
+                        </div>
+                        
                         <h3>{food.name}</h3>
                         <p className="food-price">₹{food.price}</p>
-                        <p>{food.description}</p>
-                        <small>📍 {food.foodPartner?.address}</small>
-                        <br />
-                        <small>By {food.foodPartner?.name}</small>
+                        <p className="ff-caption">{food.description}</p>
                     </div>
 
                     <div className="reel-actions">
-                        <button className="action-btn" onClick={handleLike}>
-                            {isLiked ? '❤️' : '🤍'} {likes}
+                        <button className={`action-btn ${isLiked ? 'liked' : ''}`} onClick={handleLike}>
+                            <span className="icon">{isLiked ? '❤️' : '🤍'}</span>
+                            <span className="count">{likes}</span>
                         </button>
                         <button className="action-btn" onClick={toggleComments}>
-                            💬 {comments.length > 0 ? comments.length : ''}
+                            <span className="icon">💬</span>
+                            <span className="count">{comments.length}</span>
                         </button>
                         <button className="action-btn" onClick={handleShare}>
-                            ↗️
+                            <span className="icon">↗️</span>
                         </button>
                         <button className="buy-btn" onClick={handleAddToCart}>
-                            Add to Cart 🛒
+                            Order Now
                         </button>
                     </div>
                 </div>

@@ -78,11 +78,30 @@ const Search = () => {
                         </div>
                     )}
                     <div className="recent-section">
-                        <h4>Trending</h4>
+                        <h4>Trending & Hashtags</h4>
                         <div className="tags-container">
-                            <span className="search-tag trending" onClick={() => setQuery('Pizza')}>🔥 Pizza</span>
-                            <span className="search-tag trending" onClick={() => setQuery('Burger')}>🔥 Burger</span>
                             <span className="search-tag trending" onClick={() => setQuery('#spicy')}>🔥 #spicy</span>
+                            <span className="search-tag trending" onClick={() => setQuery('#cheesy')}>🧀 #cheesy</span>
+                            <span className="search-tag trending" onClick={() => setQuery('#vegan')}>🌱 #vegan</span>
+                            <span className="search-tag trending" onClick={() => setQuery('#healthy')}>🥗 #healthy</span>
+                            <span className="search-tag trending" onClick={() => setQuery('#streetfood')}>🏘️ #streetfood</span>
+                            <span className="search-tag" onClick={() => setQuery('#dessert')}>🍰 #dessert</span>
+                            <span className="search-tag" onClick={() => setQuery('#burger')}>🍔 #burger</span>
+                            <span className="search-tag" onClick={() => setQuery('#pizza')}>🍕 #pizza</span>
+                            <span className="search-tag" onClick={() => setQuery('#sushi')}>🍣 #sushi</span>
+                            <span className="search-tag" onClick={() => setQuery('#tacos')}>🌮 #tacos</span>
+                            <span className="search-tag" onClick={() => setQuery('#coffee')}>☕ #coffee</span>
+                            <span className="search-tag" onClick={() => setQuery('#pasta')}>🍝 #pasta</span>
+                            <span className="search-tag" onClick={() => setQuery('#bbq')}>🍗 #bbq</span>
+                            <span className="search-tag" onClick={() => setQuery('#seafood')}>🦞 #seafood</span>
+                            <span className="search-tag" onClick={() => setQuery('#breakfast')}>🍳 #breakfast</span>
+                            <span className="search-tag" onClick={() => setQuery('#late-night')}>🌙 #late-night</span>
+                            <span className="search-tag" onClick={() => setQuery('#homegrown')}>🪴 #homegrown</span>
+                            <span className="search-tag" onClick={() => setQuery('#munchies')}>🍟 #munchies</span>
+                            <span className="search-tag" onClick={() => setQuery('#instafood')}>📸 #instafood</span>
+                            <span className="search-tag" onClick={() => setQuery('#comfortfood')}>🛋️ #comfortfood</span>
+                            <span className="search-tag" onClick={() => setQuery('#gourmet')}>✨ #gourmet</span>
+                            <span className="search-tag" onClick={() => setQuery('#fusion')}>🔀 #fusion</span>
                         </div>
                     </div>
                 </div>

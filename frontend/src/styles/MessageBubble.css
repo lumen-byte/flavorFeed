@@ -1,0 +1,102 @@
+/* ─── Message Bubbles ──────────────────────────────────────────────────────── */
+.msg-row {
+  display: flex;
+  margin-bottom: 8px;
+  animation: fadeSlideUp 0.22s ease forwards;
+}
+
+.msg-row.own   { justify-content: flex-end; }
+.msg-row.other { justify-content: flex-start; }
+
+.msg-bubble {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: var(--ff-radius-md);
+  font-size: var(--ff-font-size-base);
+  line-height: 1.45;
+}
+
+.msg-bubble.own {
+  background: var(--ff-gradient);
+  color: var(--ff-bg);
+  border-bottom-right-radius: 2px;
+}
+
+.msg-bubble.other {
+  background: var(--ff-bg);
+  color: var(--ff-text-primary);
+  border: 1px solid var(--ff-border);
+  border-bottom-left-radius: 2px;
+}
+
+/* Shared card preview */
+.msg-share-label {
+  font-size: var(--ff-font-size-xs);
+  opacity: 0.75;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.msg-share-card {
+  background: var(--ff-bg);
+  border-radius: var(--ff-radius-sm);
+  overflow: hidden;
+  width: 180px;
+  color: var(--ff-text-primary);
+  border: 1px solid var(--ff-border);
+}
+
+.msg-share-img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  background: var(--ff-surface);
+  display: block;
+}
+
+.msg-share-body {
+  padding: 8px;
+}
+
+.msg-share-title {
+  font-size: var(--ff-font-size-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--ff-text-primary);
+}
+
+.msg-share-price {
+  font-size: var(--ff-font-size-sm);
+  font-weight: 700;
+  color: var(--ff-gradient-start);
+  margin-top: 2px;
+}
+
+.msg-share-btn {
+  margin-top: 6px;
+  width: 100%;
+  background: var(--ff-gradient);
+  color: var(--ff-bg);
+  border: none;
+  border-radius: var(--ff-radius-sm);
+  padding: 5px;
+  font-size: var(--ff-font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--ff-font);
+  transition: opacity 0.15s;
+}
+.msg-share-btn:hover { opacity: 0.88; }
+
+/* Timestamp + read receipt */
+.msg-meta {
+  font-size: var(--ff-font-size-xs);
+  opacity: 0.65;
+  margin-top: 4px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 3px;
+}

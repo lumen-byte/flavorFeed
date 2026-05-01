@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import ReelCard from './ReelCard';
 import { useLocation } from '../context/LocationContext';
+import { useFeed } from '../context/FeedContext';
 import './Feed.css';
 
 const Feed = () => {
     const [foods, setFoods] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0);
-    const [feedType, setFeedType] = useState('all'); // 'all' or 'nearby'
+    const { feedType } = useFeed(); // Using shared state from Navbar
     const containerRef = useRef(null);
     const { location } = useLocation();
 
@@ -42,22 +43,6 @@ const Feed = () => {
 
     return (
         <div className="feed-container" ref={containerRef} onScroll={handleScroll}>
-            <div className="feed-tabs">
-                <button
-                    className={feedType === 'all' ? 'active' : ''}
-                    onClick={() => setFeedType('all')}
-                >
-                    For You
-                </button>
-                <div className="divider">|</div>
-                <button
-                    className={feedType === 'nearby' ? 'active' : ''}
-                    onClick={() => setFeedType('nearby')}
-                >
-                    Nearby 📍
-                </button>
-            </div>
-
             {foods.length > 0 ? (
                 foods.map((food, index) => (
                     <ReelCard

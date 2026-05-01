@@ -13,7 +13,11 @@ const router = express.Router();
 
 router.post('/',
     authFoodPartnerMiddleware,
-    upload.single("video"), createFood
+    upload.fields([
+        { name: 'video', maxCount: 1 },
+        { name: 'thumbnail', maxCount: 1 }
+    ]),
+    createFood
 );
 router.get('/partner/me', authFoodPartnerMiddleware, getPartnerFoodItems);
 router.delete('/:id', authFoodPartnerMiddleware, deleteFood);

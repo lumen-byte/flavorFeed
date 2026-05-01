@@ -1,45 +1,47 @@
+/* ─── Video Card ───────────────────────────────────────────────────────────── */
 .video-card {
-    position: relative;
-    width: 100%;
-    height: 100vh; /* Full viewport height */
-    background-color: black;
-    scroll-snap-align: start; /* Key property for snap scrolling */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: var(--ff-text-primary);  /* near-black for video viewing */
+  scroll-snap-align: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .video-player {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Fill the screen like TikTok/Reels */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .video-overlay {
-    position: absolute;
-    bottom: 80px;
-    left: 20px;
-    color: white;
-    z-index: 10;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  position: absolute;
+  bottom: 80px;
+  left: 20px;
+  color: var(--ff-bg);
+  z-index: 10;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 .video-overlay h3 {
-    margin: 0;
-    font-size: 1.5rem;
+  margin: 0;
+  font-size: var(--ff-font-size-xl);
+  font-weight: 600;
 }
 
 .video-overlay p {
-    margin: 5px 0 0;
-    font-size: 1rem;
+  margin: 4px 0 0;
+  font-size: var(--ff-font-size-base);
 }
 
 .play-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 5rem;
-    color: rgba(255, 255, 255, 0.7);
-    pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem;
+  color: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
 }

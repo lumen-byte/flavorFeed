@@ -1,0 +1,85 @@
+:root {
+  /* ─── Backgrounds ──────────────────────────────────────── */
+  --ff-bg: #ffffff;
+  --ff-surface: #fafafa;
+  --ff-surface-raised: #ffffff;
+
+  /* ─── Borders ──────────────────────────────────────────── */
+  --ff-border: #efefef;
+  --ff-border-strong: #dbdbdb;
+
+  /* ─── Text ─────────────────────────────────────────────── */
+  --ff-text-primary: #262626;
+  --ff-text-secondary: #737373;
+  --ff-text-muted: #8e8e8e;
+  --ff-text-placeholder: #c7c7c7;
+
+  /* ─── Brand gradient ────────────────────────────────────── */
+  --ff-gradient: linear-gradient(90deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  --ff-gradient-45: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  --ff-gradient-start: #f09433;
+  --ff-gradient-end: #bc1888;
+
+  /* ─── Semantic colours ──────────────────────────────────── */
+  --ff-link: #0095f6;
+  --ff-like: #ed4956;
+  --ff-success: #2ecc71;
+  --ff-warning: #f39c12;
+  --ff-error: #ed4956;
+
+  /* ─── Badge colours ─────────────────────────────────────── */
+  --ff-badge-success-bg: #d4edda;
+  --ff-badge-success-fg: #155724;
+  --ff-badge-error-bg: #f8d7da;
+  --ff-badge-error-fg: #721c24;
+
+  /* ─── Spacing (8pt grid) ────────────────────────────────── */
+  --ff-space-xs: 4px;
+  --ff-space-sm: 8px;
+  --ff-space-md: 16px;
+  --ff-space-lg: 24px;
+  --ff-space-xl: 32px;
+
+  /* ─── Border radius ─────────────────────────────────────── */
+  --ff-radius-sm: 8px;
+  --ff-radius-md: 12px;
+  --ff-radius-lg: 16px;
+  --ff-radius-pill: 9999px;
+
+  /* ─── Shadows ───────────────────────────────────────────── */
+  --ff-shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --ff-shadow-modal: 0 4px 24px rgba(0,0,0,0.10);
+
+  /* ─── Typography ────────────────────────────────────────── */
+  --ff-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --ff-font-size-xs: 11px;
+  --ff-font-size-sm: 12px;
+  --ff-font-size-base: 14px;
+  --ff-font-size-md: 15px;
+  --ff-font-size-lg: 18px;
+  --ff-font-size-xl: 22px;
+}
+
+/* ─── Dark Mode Overrides ─────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ff-bg: #000000;
+    --ff-surface: #121212;
+    --ff-surface-raised: #1c1c1c;
+
+    --ff-border: #262626;
+    --ff-border-strong: #363636;
+
+    --ff-text-primary: #ffffff;
+    --ff-text-secondary: #a8a8a8;
+    --ff-text-muted: #737373;
+
+    --ff-shadow-card: 0 1px 3px rgba(0,0,0,0.5);
+    --ff-shadow-modal: 0 12px 28px rgba(0,0,0,0.8);
+
+    --ff-badge-success-bg: rgba(46, 204, 113, 0.2);
+    --ff-badge-success-fg: #2ecc71;
+    --ff-badge-error-bg: rgba(237, 73, 86, 0.2);
+    --ff-badge-error-fg: #ed4956;
+  }
+}

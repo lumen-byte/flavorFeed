@@ -1,57 +1,54 @@
-/* Rating Modal Specific Styles */
-
+/* ─── Rating Modal ─────────────────────────────────────────────────────────── */
 .rating-modal {
-    text-align: center;
+  text-align: center;
 }
 
 .partner-name-highlight {
-    color: #ff4757;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    font-size: 1.2rem;
+  font-size: var(--ff-font-size-md);
+  font-weight: 600;
+  background: var(--ff-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-top: 4px;
+  margin-bottom: 18px;
 }
 
 .stars-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .star {
-    font-size: 2.5rem;
-    color: #ccc;
-    cursor: pointer;
-    transition: color 0.2s, transform 0.2s;
+  font-size: 2.2rem;
+  color: var(--ff-border-strong);
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
 }
 
-.star:hover {
-    transform: scale(1.2);
-}
+.star:hover { transform: scale(1.15); }
 
-.star.filled {
-    color: #ffd700;
-}
+.star.filled { color: var(--ff-warning); }
 
 .rating-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .rating-form textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    resize: none;
-    font-family: inherit;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--ff-border-strong);
+  border-radius: var(--ff-radius-sm);
+  resize: none;
+  font-family: var(--ff-font);
+  font-size: var(--ff-font-size-base);
+  color: var(--ff-text-primary);
+  background: var(--ff-surface);
+  outline: none;
+  transition: border-color 0.2s;
 }
-
-@media (prefers-color-scheme: dark) {
-    .rating-form textarea {
-        background: #333;
-        border-color: #444;
-        color: white;
-    }
-}
+.rating-form textarea:focus { border-color: var(--ff-text-muted); }

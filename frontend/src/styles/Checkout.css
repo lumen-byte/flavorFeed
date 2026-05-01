@@ -1,41 +1,26 @@
 @import './Cart.css';
 
-/* Billing Engine Specifics */
+/* ─── Billing Engine ───────────────────────────────────────────────────────── */
 .billing-engine {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 12px;
-    margin-top: 15px;
-}
-
-@media (prefers-color-scheme: dark) {
-    .billing-engine {
-        background: #2a2a2a;
-    }
+  background: var(--ff-surface);
+  padding: 15px;
+  border-radius: var(--ff-radius-md);
+  margin-top: 15px;
+  border: 1px solid var(--ff-border);
 }
 
 .summary-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-@media (prefers-color-scheme: dark) {
-    .summary-row {
-        color: #bbb;
-    }
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: var(--ff-font-size-base);
+  color: var(--ff-text-secondary);
 }
 
 .summary-row.grand-total {
-    font-size: 1.1rem;
-    color: #333;
-    padding-top: 10px;
-}
-
-@media (prefers-color-scheme: dark) {
-    .summary-row.grand-total {
-        color: white;
-    }
+  font-size: var(--ff-font-size-md);
+  color: var(--ff-text-primary);
+  font-weight: 700;
+  padding-top: 10px;
+  border-top: 1px solid var(--ff-border);
 }

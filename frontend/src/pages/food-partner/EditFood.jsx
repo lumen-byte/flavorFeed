@@ -71,11 +71,11 @@ const EditFood = () => {
         }
     };
 
-    if (loading) return <div style={{ color: 'white', padding: '20px' }}>Loading...</div>;
+    if (loading) return <div className="create-food-page"><p className="ff-meta">Loading…</p></div>;
 
     return (
-        <div className="create-food-container">
-            <div className="create-food-card">
+        <div className="create-food-page">
+            <div className="create-card">
                 <h2>Edit Reel ✏️</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
@@ -116,9 +116,9 @@ const EditFood = () => {
 
                     <button
                         type="button"
-                        className="cancel-btn"
+                        className="btn-ghost"
+                        style={{ width: '100%', marginTop: '10px' }}
                         onClick={() => navigate('/food-partner/dashboard')}
-                        style={{ marginTop: '10px', background: '#555', width: '100%', padding: '10px', border: 'none', borderRadius: '5px', color: 'white', cursor: 'pointer' }}
                     >
                         Cancel
                     </button>

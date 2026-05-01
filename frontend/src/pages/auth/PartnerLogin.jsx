@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import "../../App.css";
+import '../../App.css';
 import axios from 'axios';
 import { connectSocket } from '../../services/socket';
 
@@ -13,50 +13,65 @@ const PartnerLogin = () => {
     const password = e.target.password.value;
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/food-partner/login`, {
-        email: businessEmail,
-        password
-      }, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/food-partner/login`,
+        { email: businessEmail, password },
+        { withCredentials: true }
+      );
       if (response.data.token) {
         localStorage.setItem('partner_token', response.data.token);
         connectSocket();
       }
-      console.log(response.data);
       navigate('/food-partner/dashboard');
     } catch (err) {
-      console.error("Login failed:", err.response?.data || err.message);
-      alert("Invalid business email or password");
+      console.error('Login failed:', err.response?.data || err.message);
+      alert('Invalid business email or password');
     }
   };
 
-  // Fixed: Removed the second 'const PartnerLogin' declaration
   return (
     <div className="auth-page">
-      <div className="auth-card">
+      <div className="auth-card animate-fade-up">
+        {/* Gradient logo */}
+        <div className="auth-logo">FlavorFeed</div>
+
         <h2>Partner Login</h2>
         <p>Manage your restaurant portal</p>
 
-        {/* Fixed: Added onSubmit handler */}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Business Email</label>
-            {/* Fixed: Added name attribute so handleSubmit can find it */}
-            <input name="businessEmail" type="email" placeholder="chef@restaurant.com" required />
+            <label htmlFor="partner-email">Business Email</label>
+            <input
+              id="partner-email"
+              name="businessEmail"
+              type="email"
+              placeholder="chef@restaurant.com"
+              required
+            />
           </div>
+
           <div className="form-group">
-            <label>Password</label>
-            {/* Fixed: Added name attribute */}
-            <input name="password" type="password" placeholder="••••••••" required />
+            <label htmlFor="partner-password">Password</label>
+            <input
+              id="partner-password"
+              name="password"
+              type="password"
+              placeholder="••••••••"
+              required
+            />
           </div>
-          {/* Fixed: Changed type to 'submit' */}
+
           <button type="submit" className="auth-btn">Dashboard Login</button>
         </form>
 
-        <div className="auth-footer">
-          Become a partner? <Link to="/food-partner/register">Register Business</Link>
+        <div className="auth-divider">
+          <span>OR</span>
         </div>
+      </div>
+
+      <div className="auth-footer-box">
+        Become a partner?&nbsp;
+        <Link to="/food-partner/register" className="auth-link">Register Business</Link>
       </div>
     </div>
   );

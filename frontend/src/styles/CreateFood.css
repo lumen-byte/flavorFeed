@@ -1,38 +1,78 @@
+/* ─── Create Food Page ─────────────────────────────────────────────────────── */
 .create-food-page {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #111;
-    color: white;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--ff-surface);
+  padding: var(--ff-space-md);
 }
 
 .create-card {
-    background: #222;
-    padding: 30px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 500px;
+  background: var(--ff-bg);
+  padding: 28px var(--ff-space-lg);
+  border-radius: var(--ff-radius-md);
+  border: 1px solid var(--ff-border);
+  box-shadow: var(--ff-shadow-card);
+  width: 100%;
+  max-width: 500px;
+}
+
+.create-card h2 {
+  font-size: var(--ff-font-size-xl);
+  font-weight: 700;
+  margin-bottom: 20px;
+  background: var(--ff-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .upload-btn {
-    width: 100%;
-    padding: 15px;
-    background: #ff4757;
-    border: none;
-    color: white;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  background: var(--ff-gradient);
+  border: none;
+  color: var(--ff-bg);
+  font-weight: 600;
+  border-radius: var(--ff-radius-sm);
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: var(--ff-font-size-base);
+  font-family: var(--ff-font);
+  transition: opacity 0.15s, transform 0.1s;
 }
+.upload-btn:hover  { opacity: 0.9; }
+.upload-btn:active { transform: scale(0.97); }
 
 .create-card textarea {
-    width: 100%;
-    padding: 10px;
-    background: #333;
-    border: none;
-    color: white;
-    border-radius: 5px;
-    min-height: 100px;
+  width: 100%;
+  padding: 9px 12px;
+  background: var(--ff-surface);
+  border: 1px solid var(--ff-border-strong);
+  color: var(--ff-text-primary);
+  border-radius: var(--ff-radius-sm);
+  min-height: 100px;
+  font-family: var(--ff-font);
+  font-size: var(--ff-font-size-base);
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+.create-card textarea:focus { border-color: var(--ff-text-muted); }
+.file-input-wrapper {
+  margin-bottom: 8px;
+}
+
+.file-input-wrapper input[type="file"] {
+  background: var(--ff-surface);
+  border: 1px dashed var(--ff-border-strong);
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: var(--ff-radius-sm);
+}
+
+.file-input-wrapper input[type="file"]:hover {
+  border-color: var(--ff-gradient-start);
 }

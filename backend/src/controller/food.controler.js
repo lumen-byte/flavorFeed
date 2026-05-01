@@ -6,16 +6,30 @@ import { v4 as uuid } from 'uuid';
 
 export async function createFood(req, res) {
     try {
-        // Validation: Prevent 500 errors if file is missing
-        if (!req.file) {
+        const videoFile = req.files['video'] ? req.files['video'][0] : null;
+        const thumbnailFile = req.files['thumbnail'] ? req.files['thumbnail'][0] : null;
+
+        if (!videoFile) {
             return res.status(400).json({ message: "Video file is required" });
         }
 
-        const fileUploadResult = await storageService.uploadFile(req.file.buffer, uuid());
+        // Upload Video
+        const videoResult = await storageService.uploadFile(videoFile.buffer, uuid());
+        let thumbnailUrl = "";
+
+        if (thumbnailFile) {
+            // Manual Thumbnail Upload
+            const thumbResult = await storageService.uploadFile(thumbnailFile.buffer, uuid());
+            thumbnailUrl = thumbResult.url;
+        } else {
+            // Auto-generate 2s thumbnail from Cloudinary
+            // Cloudinary video URLs look like: .../video/upload/v123/public_id.mp4
+            // Image version: .../video/upload/so_2/v123/public_id.jpg
+            thumbnailUrl = videoResult.url.replace("/video/upload/", "/video/upload/so_2/").replace(/\.[^/.]+$/, ".jpg");
+        }
 
         console.log("CreateFood: Partner ID:", req.foodPartner?._id);
 
-        // Parse Hashtags
         const extractedHashtags = req.body.description ? req.body.description.match(/#[a-zA-Z0-9_]+/g) || [] : [];
         const parsedAddOns = req.body.addOns ? JSON.parse(req.body.addOns) : [];
 
@@ -23,8 +37,8 @@ export async function createFood(req, res) {
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
-            video: fileUploadResult.url,
-            // FIX: Access ID from req.foodPartner (attached by middleware)
+            video: videoResult.url,
+            thumbnail: thumbnailUrl,
             foodPartner: req.foodPartner._id,
             hashtags: extractedHashtags,
             addOns: parsedAddOns

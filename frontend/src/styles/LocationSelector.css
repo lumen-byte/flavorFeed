@@ -1,113 +1,104 @@
+/* ─── Location Selector ────────────────────────────────────────────────────── */
 .location-title {
-    margin-bottom: 25px !important;
-    font-size: 1.25rem !important;
+  margin-bottom: 20px !important;
+  font-size: var(--ff-font-size-lg) !important;
+  font-weight: 600;
+  color: var(--ff-text-primary);
 }
 
 .location-option {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-    cursor: pointer;
-    border: 1px solid var(--border, #eee);
-    background: var(--card-bg, #fff);
-    transition: transform 0.2s, box-shadow 0.2s;
-    text-align: left;
-}
-
-@media (prefers-color-scheme: dark) {
-    .location-option {
-        background: #1a1a1a;
-        border-color: #333;
-    }
+  display: flex;
+  align-items: center;
+  padding: var(--ff-space-md);
+  border-radius: var(--ff-radius-md);
+  margin-bottom: 12px;
+  cursor: pointer;
+  border: 1px solid var(--ff-border);
+  background: var(--ff-bg);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: left;
+  box-shadow: var(--ff-shadow-card);
 }
 
 .location-option:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
 }
 
-.location-option:active {
-    transform: scale(0.98);
-}
+.location-option:active { transform: scale(0.98); }
 
 .location-option.active {
-    border-color: var(--primary, #ff4757);
-    background: rgba(255, 71, 87, 0.05);
+  border: 2px solid transparent;
+  background: linear-gradient(var(--ff-bg), var(--ff-bg)) padding-box,
+              var(--ff-gradient-45) border-box;
 }
 
 .location-option.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .loc-icon {
-    font-size: 1.5rem;
-    margin-right: 15px;
-    background: var(--role-bg, #f1f2f6);
-    width: 45px;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-}
-
-@media (prefers-color-scheme: dark) {
-    .loc-icon {
-        background: #333;
-    }
+  font-size: 1.4rem;
+  margin-right: 14px;
+  background: var(--ff-surface);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--ff-border);
+  flex-shrink: 0;
 }
 
 .location-option.active .loc-icon {
-    background: var(--primary, #ff4757);
-    color: white;
+  background: var(--ff-gradient);
+  color: var(--ff-bg);
+  border-color: transparent;
 }
 
-.loc-details {
-    flex: 1;
-}
+.loc-details { flex: 1; }
 
 .loc-details h4 {
-    margin: 0 0 4px 0;
-    font-size: 1rem;
-    color: var(--text-main, #333);
+  margin: 0 0 3px 0;
+  font-size: var(--ff-font-size-base);
+  font-weight: 600;
+  color: var(--ff-text-primary);
 }
 
 .loc-details p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--text-muted, #777);
+  margin: 0;
+  font-size: var(--ff-font-size-sm);
+  color: var(--ff-text-muted);
 }
 
 .check-icon {
-    color: var(--primary, #ff4757);
-    font-weight: bold;
-    font-size: 1.2rem;
+  background: var(--ff-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  font-size: 1.2rem;
 }
 
-.location-search-box {
-    margin-bottom: 20px;
-}
+.location-search-box { margin-bottom: 18px; }
 
 .location-search-input {
-    width: 100%;
-    padding: 12px 15px;
-    border-radius: 8px;
-    border: 1px solid var(--border, #333);
-    background: var(--card-bg, #1e1e1e);
-    color: var(--text-main, #fff);
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.2s;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: var(--ff-radius-sm);
+  border: 1px solid var(--ff-border-strong);
+  background: var(--ff-surface);
+  color: var(--ff-text-primary);
+  font-size: var(--ff-font-size-base);
+  font-family: var(--ff-font);
+  outline: none;
+  transition: border-color 0.2s;
 }
-
-.location-search-input:focus {
-    border-color: var(--primary, #ff4757);
-}
+.location-search-input:focus { border-color: var(--ff-text-muted); }
 
 .location-results {
-    max-height: 250px;
-    overflow-y: auto;
-    margin-bottom: 15px;
+  max-height: 250px;
+  overflow-y: auto;
+  margin-bottom: 12px;
 }

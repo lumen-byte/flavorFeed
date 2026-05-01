@@ -12,7 +12,7 @@ export const getConversations = async (req, res, next) => {
         select: 'content messageType sender createdAt seenBy'
       })
       .sort({ updatedAt: -1 });
-      
+
     res.status(200).json(conversations);
   } catch (error) {
     next(error);
@@ -74,7 +74,7 @@ export const getMessages = async (req, res, next) => {
     }
 
     let query = { conversationId };
-    
+
     if (cursor) {
       // Fetch messages older than the cursor
       query.createdAt = { $lt: new Date(cursor) };
@@ -131,7 +131,7 @@ export const sendMessage = async (req, res, next) => {
     if (messageType === 'food_share') messageData.sharedFood = sharedFood;
 
     let newMessage = await Message.create(messageData);
-    
+
     newMessage = await newMessage.populate('sender', 'fullName');
     if (messageType === 'reel_share') newMessage = await newMessage.populate('sharedReel');
     if (messageType === 'food_share') newMessage = await newMessage.populate('sharedFood');
